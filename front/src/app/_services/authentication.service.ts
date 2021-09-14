@@ -34,7 +34,7 @@ export class AuthenticationService {
     }
 
     logout() {
-        //this.http.post<any>(`${environment.apiUrl}/users/revoke-token`, {}, { withCredentials: true }).subscribe();
+        this.http.post<any>(`${environment.apiUrl}/auth/logout`, {}).subscribe();
         this.stopRefreshTokenTimer();
         this.currentUserSubject.next(null);
         this.router.navigate(['/login']);
