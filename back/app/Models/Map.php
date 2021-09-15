@@ -20,4 +20,8 @@ class Map extends Model
         'image_url',
         'game_id',
     ];
+
+    public function quests(){
+        return $this->hasMany( 'App\Models\Quest', 'map_id', 'id' );
+    }
 }

@@ -23,6 +23,16 @@ class MapController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list_hierarchy()
+    {
+        return response()->json(Map::with("quests.tasks")->get(), 200);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -33,21 +43,17 @@ class MapController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Must be logged in to create a new map.'
-            );
-
-            return response()->json($message, 401); // Unauthorized
+            ), 401); // Unauthorized
         }
 
         if ($user->user_group == 0) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User group has no rights to create a new map.'
-            );
-
-            return response()->json($message, 403); // Forbidden
+            ), 403); // Forbidden
         }
 
     	$validator = Validator::make($request->all(), [
@@ -63,35 +69,33 @@ class MapController extends Controller
 
         $validated_data = $validator->validated();
 
+        // --------- GAME EXISTS CHECK ---------
+
         $game = Game::find($validated_data['game_id']);
 
         if (!$game) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Game with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+            ), 404);
         }
+
+        // --------- GAME OWNER CHECK ---------
 
         if ($game->owner_id != $user->id) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User has no rights to add more maps to specified game.'
-            );
-
-            return response()->json($message, 403);
+            ), 403);
         }
 
-        $map = Map::create($validated_data);
+        // --------- --------- ---------
 
-        $message = array(
+        return response()->json(array(
             'status' => 'success',
             'message' => 'A new map has been added.',
-            'map' => $map
-        );
-
-        return response()->json($message, 201); // Created
+            'map' => Map::create($validated_data)
+        ), 201); // Created
     }
 
     /**
@@ -115,12 +119,40 @@ class MapController extends Controller
         $data = Map::find($validated_data['id']);
 
         if (!$data) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' =>  'Map with given ID could not be found.'
-            );
+            ), 404);
+        }
 
-            return response()->json($message, 404);
+        return response()->json($data, 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function read_hierarchy(Request $request)
+    {
+    	$validator = Validator::make($request->all(), [
+            'id' => 'numeric|required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $validated_data = $validator->validated();
+
+        $data = Map::with("quests.tasks")->find($validated_data['id']);
+
+        if (!$data) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' =>  'Map with given ID could not be found.'
+            ), 404);
         }
 
         return response()->json($data, 200);
@@ -137,21 +169,17 @@ class MapController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Must be logged in to update update maps.'
-            );
-
-            return response()->json($message, 401); // Unauthorized
+            ), 401); // Unauthorized
         }
 
         if ($user->user_group == 0) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User group has no rights to update maps.'
-            );
-
-            return response()->json($message, 403); // Forbidden
+            ), 403); // Forbidden
         }
 
     	$validator = Validator::make($request->all(), [
@@ -170,41 +198,33 @@ class MapController extends Controller
         $data = Map::find($validated_data['id']);
 
         if (!$data) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Map with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+            ), 404);
         }
 
         $game = Game::find($validated_data['game_id']);
 
         if (!$game) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Game with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+            ), 404);
         }
 
         if ($game->owner_id != $user->id) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User has no rights to update maps of specified game.'
-            );
-
-            return response()->json($message, 403);
+            ), 403);
         }
 
         if (!$data) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Map with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+            ), 404);
         }
         
         $data->title = $validated_data['title'];
@@ -213,13 +233,12 @@ class MapController extends Controller
         $data->game_id = $validated_data['game_id'];
 
         $data->save();
-        $message = array(
+        
+        return response()->json(array(
             'status' => 'success',
             'message' => 'Specified map has been successfully updated.',
             'map' => $data
-        );
-
-        return response()->json($message, 200);
+        ), 200);
     }
 
     /**
@@ -233,21 +252,17 @@ class MapController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Must be logged in to delete a map.'
-            );
-
-            return response()->json($message, 401); // Unauthorized
+            ), 401); // Unauthorized
         }
 
         if ($user->user_group == 0) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User group has no rights to delete maps.'
-            );
-
-            return response()->json($message, 403); // Forbidden
+            ), 403); // Forbidden
         }
 
     	$validator = Validator::make($request->all(), [
@@ -262,41 +277,34 @@ class MapController extends Controller
         $data = Map::find($validated_data['id']);
 
         if (!$data) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Map with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+            ), 404);
         }
 
         $game = Game::find($data->game_id);
 
         if (!$game) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Game with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+            ), 404);
         }
 
         if ($game->owner_id != $user->id) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User has no rights to delete maps from specified game.'
-            );
-
-            return response()->json($message, 403);
+            ), 403);
         }
 
         Map::destroy($data->id);
-        $message = array(
+        
+        return response()->json(array(
             'status' => 'success',
             'message' => 'Specified map has been successfully deleted.',
             'map' => $data
-        );
-
-        return response()->json($message, 200);
+        ), 200);
     }
 }

@@ -22,4 +22,8 @@ class Game extends Model
         'rating',
         'owner_id',
     ];
+
+    public function maps(){
+        return $this->hasMany( 'App\Models\Map', 'game_id', 'id' );
+    }
 }

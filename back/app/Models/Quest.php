@@ -22,4 +22,8 @@ class Quest extends Model
         'map_coord_y',
         'map_id',
     ];
+
+    public function tasks(){
+        return $this->hasMany( 'App\Models\Task', 'quest_id', 'id' );
+    }
 }

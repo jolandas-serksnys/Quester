@@ -22,6 +22,16 @@ class GameController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list_hierarchy()
+    {
+        return response()->json(Game::with('maps.quests.tasks')->get(), 200);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -94,6 +104,38 @@ class GameController extends Controller
         $validated_data = $validator->validated();
 
         $data = Game::find($validated_data['id']);
+
+        if (!$data) {
+            $message = array(
+                'status' => 'error',
+                'message' => 'Game with given ID could not be found.'
+            );
+
+            return response()->json($message, 404);
+        }
+
+        return response()->json($data, 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function read_hierarchy(Request $request)
+    {
+    	$validator = Validator::make($request->all(), [
+            'id' => 'numeric|required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $validated_data = $validator->validated();
+
+        $data = Game::with('maps.quests.tasks')->get()->find($validated_data['id']);
 
         if (!$data) {
             $message = array(
