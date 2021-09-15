@@ -16,7 +16,7 @@ class CreateQuestsTable extends Migration
         Schema::create('quests', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('image_url')->nullable();
             $table->string('map_coord_x')->nullable();
             $table->string('map_coord_y')->nullable();
