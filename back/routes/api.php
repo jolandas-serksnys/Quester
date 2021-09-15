@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\MapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +39,16 @@ Route::group([
     Route::get('/read', [GameController::class, 'read']);
     Route::put('/update', [GameController::class, 'update']);
     Route::delete('/delete', [GameController::class, 'delete']);    
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'map'
+], function ($router) {
+    Route::get('/list', [MapController::class, 'list']);
+    
+    Route::post('/create', [MapController::class, 'create']);
+    Route::get('/read', [MapController::class, 'read']);
+    Route::put('/update', [MapController::class, 'update']);
+    Route::delete('/delete', [MapController::class, 'delete']);    
 });
