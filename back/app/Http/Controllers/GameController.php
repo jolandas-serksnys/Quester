@@ -9,6 +9,8 @@ use App\Models\Game;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
+use App\Http\Controllers\MapController;
+
 class GameController extends Controller
 {
     /**
@@ -83,9 +85,9 @@ class GameController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function get($id)
+    public function get($gameId)
     {
-        $game = Game::find($id);
+        $game = Game::find($gameId);
 
         if (!$game) {
             return response()->json(array(
@@ -103,9 +105,9 @@ class GameController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getHierarchy($id)
+    public function getHierarchy($gameId)
     {
-        $game = Game::with('maps.quests.tasks')->find($id);
+        $game = Game::with('maps.quests.tasks')->find($gameId);
 
         if (!$game) {
             return response()->json(array(
@@ -124,7 +126,7 @@ class GameController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $gameId)
     {
         $user = auth()->user();
 
@@ -155,7 +157,7 @@ class GameController extends Controller
         }
 
         $validated_data = $validator->validated();
-        $game = Game::find($id);
+        $game = Game::find($gameId);
 
         if (!$game) {
             return response()->json(array(
@@ -192,7 +194,7 @@ class GameController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete($gameId)
     {
         $user = auth()->user();
 
@@ -210,7 +212,7 @@ class GameController extends Controller
             ), 403); // Forbidden
         }
 
-        $game = Game::find($id);
+        $game = Game::find($gameId);
 
         if (!$game) {
             return response()->json(array(
@@ -226,12 +228,95 @@ class GameController extends Controller
             ), 403);
         }
 
-        Game::destroy($game->id);
+        Game::destroy($gameId);
 
         return response()->json(array(
             'status' => 'success',
             'message' => 'Specified game has been successfully deleted.',
             'game' => $game
         ), 200);
+    }
+
+    // -------------------------------------------------
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMaps($gameId)
+    {
+        $game = Game::find($gameId);
+
+        if (!$game) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid game ID.'
+            ), 422);
+        }
+
+        return app('App\Http\Controllers\MapController')->getGameMaps($gameId);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @param  int  $mapId
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMap($gameId, $mapId)
+    {
+        $game = Game::find($gameId);
+
+        if (!$game) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid game ID.'
+            ), 422);
+        }
+
+        return app('App\Http\Controllers\MapController')->getGameMap($gameId, $mapId);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMapQuests($gameId, $mapId)
+    {
+        $game = Game::find($gameId);
+
+        if (!$game) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid game ID.'
+            ), 422);
+        }
+
+        return app('App\Http\Controllers\MapController')->getGameMapQuests($gameId, $mapId);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMapQuest($gameId, $mapId, $questId)
+    {
+        $game = Game::find($gameId);
+
+        if (!$game) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid game ID.'
+            ), 422);
+        }
+
+        return app('App\Http\Controllers\MapController')->getGameMapQuest($gameId, $mapId, $questId);
     }
 }

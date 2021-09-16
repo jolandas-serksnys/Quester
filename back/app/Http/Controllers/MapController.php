@@ -257,4 +257,81 @@ class MapController extends Controller
             'map' => $map
         ), 200);
     }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMaps($gameId)
+    {
+        return response()->json(Map::where('maps.game_id', $gameId)->get(), 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @param  int  $mapId
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMap($gameId, $mapId)
+    {
+        $map = Map::where("game_id", $gameId)->with("quests.tasks")->find($mapId);
+
+        if (!$map) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid map ID.'
+            ), 422);
+        }
+        
+        return response()->json($map, 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $gameId
+     * @param  int  $mapId
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMapQuests($gameId, $mapId)
+    {
+        $map = Map::where("game_id", $gameId)->with("quests.tasks")->find($mapId);
+
+        if (!$map) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid map ID.'
+            ), 422);
+        }
+        
+        return app('App\Http\Controllers\QuestController')->getGameMapQuests($mapId);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $gameId
+     * @param  int  $mapId
+     * @param  int  $questId
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMapQuest($gameId, $mapId, $questId)
+    {
+        $map = Map::where("game_id", $gameId)->with("quests.tasks")->find($mapId);
+
+        if (!$map) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid map ID.'
+            ), 422);
+        }
+        
+        return app('App\Http\Controllers\QuestController')->getGameMapQuest($mapId, $questId);
+    }
 }

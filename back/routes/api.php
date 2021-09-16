@@ -37,12 +37,18 @@ Route::group([
 ], function ($router) {
     Route::get('/', [GameController::class, 'getAll']);
     Route::get('/hierarchy', [GameController::class, 'getAllHierarchy']);
-    Route::get('/hierarchy/{id}', [GameController::class, 'getHierarchy']);
+    Route::get('/hierarchy/{gameId}', [GameController::class, 'getHierarchy']);
 
     Route::post('/', [GameController::class, 'create']);
-    Route::get('/{id}', [GameController::class, 'get']);
-    Route::put('/{id}', [GameController::class, 'update']);
-    Route::delete('/{id}', [GameController::class, 'delete']);    
+    Route::get('/{gameId}', [GameController::class, 'get']);
+    Route::put('/{gameId}', [GameController::class, 'update']);
+    Route::delete('/{gameId}', [GameController::class, 'delete']);  
+
+    Route::get('/{gameId}/maps', [GameController::class, 'getGameMaps']);  
+    Route::get('/{gameId}/maps/{mapId}', [GameController::class, 'getGameMap']);  
+
+    Route::get('/{gameId}/maps/{mapId}/quests', [GameController::class, 'getGameMapQuests']);  
+    Route::get('/{gameId}/maps/{mapId}/quests/{questId}', [GameController::class, 'getGameMapQuest']);  
 });
 
 Route::group([

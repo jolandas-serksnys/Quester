@@ -266,4 +266,47 @@ class QuestController extends Controller
             'quest' => $quest
         ), 200);
     }
+
+    // -------------------------
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $mapId
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMapQuests($mapId)
+    {
+        $quest = Quest::where("map_id", $mapId)->with("tasks")->get();
+
+        if (!$quest) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid map ID.'
+            ), 422);
+        }
+        
+        return response()->json($quest, 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $mapId
+     * @param  int  $questId
+     * @return \Illuminate\Http\Response
+     */
+    public function getGameMapQuest($mapId, $questId)
+    {
+        $quest = Quest::where("map_id", $mapId)->with("tasks")->find($questId);
+
+        if (!$quest) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Invalid quest ID.'
+            ), 422);
+        }
+        
+        return response()->json($quest, 200);
+    }
 }
