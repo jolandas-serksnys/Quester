@@ -17,7 +17,7 @@ class MapController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function getAll()
     {
         return response()->json(Map::all(), 200);
     }
@@ -27,7 +27,7 @@ class MapController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function list_hierarchy()
+    public function getAllHierarchy()
     {
         return response()->json(Map::with("quests.tasks")->get(), 200);
     }
@@ -60,7 +60,7 @@ class MapController extends Controller
             'title' => 'string|required|max:255',
             'description' => 'string|max:65535|nullable',
             'image_url' => 'string|max:255|nullable',
-            'game_id' => 'numeric|required',
+            'game_id' => 'numeric|required|exists:games,id',
         ]);
 
         if ($validator->fails()) {
@@ -69,18 +69,9 @@ class MapController extends Controller
 
         $validated_data = $validator->validated();
 
-        // --------- GAME EXISTS CHECK ---------
-
-        $game = Game::find($validated_data['game_id']);
-
-        if (!$game) {
-            return response()->json(array(
-                'status' => 'error',
-                'message' => 'Game with given ID could not be found.'
-            ), 404);
-        }
-
         // --------- GAME OWNER CHECK ---------
+        
+        $game = Game::find($validated_data['game_id']);
 
         if ($game->owner_id != $user->id) {
             return response()->json(array(
@@ -101,70 +92,51 @@ class MapController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function read(Request $request)
+    public function get($id)
     {
-    	$validator = Validator::make($request->all(), [
-            'id' => 'numeric|required'
-        ]);
+        $map = Map::find($id);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $validated_data = $validator->validated();
-
-        $data = Map::find($validated_data['id']);
-
-        if (!$data) {
+        if (!$map) {
             return response()->json(array(
                 'status' => 'error',
-                'message' =>  'Map with given ID could not be found.'
-            ), 404);
+                'message' => 'Invalid map ID.'
+            ), 422);
         }
-
-        return response()->json($data, 200);
+        
+        return response()->json($map, 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function read_hierarchy(Request $request)
+    public function getHierarchy($id)
     {
-    	$validator = Validator::make($request->all(), [
-            'id' => 'numeric|required'
-        ]);
+        $map = Map::with("quests.tasks")->find($id);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $validated_data = $validator->validated();
-
-        $data = Map::with("quests.tasks")->find($validated_data['id']);
-
-        if (!$data) {
+        if (!$map) {
             return response()->json(array(
                 'status' => 'error',
-                'message' =>  'Map with given ID could not be found.'
-            ), 404);
+                'message' => 'Invalid map ID.'
+            ), 422);
         }
-
-        return response()->json($data, 200);
+        
+        return response()->json($map, 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $user = auth()->user();
 
@@ -183,11 +155,10 @@ class MapController extends Controller
         }
 
     	$validator = Validator::make($request->all(), [
-            'id' => 'numeric|required',
             'title' => 'string|required|max:255',
             'description' => 'string|max:65535|nullable',
             'image_url' => 'string|max:255|nullable',
-            'game_id' => 'numeric|required'
+            'game_id' => 'numeric|required|exists:games,id'
         ]);
 
         if ($validator->fails()) {
@@ -195,23 +166,17 @@ class MapController extends Controller
         }
 
         $validated_data = $validator->validated();
-        $data = Map::find($validated_data['id']);
 
-        if (!$data) {
+        $map = Map::find($id);
+
+        if (!$map) {
             return response()->json(array(
                 'status' => 'error',
-                'message' => 'Map with given ID could not be found.'
-            ), 404);
+                'message' => 'Invalid map ID.'
+            ), 422);
         }
 
         $game = Game::find($validated_data['game_id']);
-
-        if (!$game) {
-            return response()->json(array(
-                'status' => 'error',
-                'message' => 'Game with given ID could not be found.'
-            ), 404);
-        }
 
         if ($game->owner_id != $user->id) {
             return response()->json(array(
@@ -219,35 +184,28 @@ class MapController extends Controller
                 'message' => 'User has no rights to update maps of specified game.'
             ), 403);
         }
-
-        if (!$data) {
-            return response()->json(array(
-                'status' => 'error',
-                'message' => 'Map with given ID could not be found.'
-            ), 404);
-        }
         
-        $data->title = $validated_data['title'];
-        $data->description = empty($validated_data['description']) ? $data->description : $validated_data['description'];
-        $data->image_url = empty($validated_data['image_url']) ? $data->image_url : $validated_data['image_url'];
-        $data->game_id = $validated_data['game_id'];
+        $map->title = $validated_data['title'];
+        $map->description = empty($validated_data['description']) ? $map->description : $validated_data['description'];
+        $map->image_url = empty($validated_data['image_url']) ? $map->image_url : $validated_data['image_url'];
+        $map->game_id = $validated_data['game_id'];
 
-        $data->save();
+        $map->save();
         
         return response()->json(array(
             'status' => 'success',
             'message' => 'Specified map has been successfully updated.',
-            'map' => $data
+            'map' => $map
         ), 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request)
+    public function delete($id)
     {
         $user = auth()->user();
 
@@ -265,25 +223,16 @@ class MapController extends Controller
             ), 403); // Forbidden
         }
 
-    	$validator = Validator::make($request->all(), [
-            'id' => 'numeric|required'
-        ]);
+        $map = Map::find($id);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $validated_data = $validator->validated();
-        $data = Map::find($validated_data['id']);
-
-        if (!$data) {
+        if (!$map) {
             return response()->json(array(
                 'status' => 'error',
-                'message' => 'Map with given ID could not be found.'
-            ), 404);
+                'message' => 'Invalid map ID.'
+            ), 422);
         }
 
-        $game = Game::find($data->game_id);
+        $game = Game::find($map->game_id);
 
         if (!$game) {
             return response()->json(array(
@@ -299,12 +248,12 @@ class MapController extends Controller
             ), 403);
         }
 
-        Map::destroy($data->id);
+        Map::destroy($map->id);
         
         return response()->json(array(
             'status' => 'success',
             'message' => 'Specified map has been successfully deleted.',
-            'map' => $data
+            'map' => $map
         ), 200);
     }
 }

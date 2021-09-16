@@ -16,7 +16,7 @@ class GameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function getAll()
     {
         return response()->json(Game::all(), 200);
     }
@@ -26,7 +26,7 @@ class GameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function list_hierarchy()
+    public function getAllHierarchy()
     {
         return response()->json(Game::with('maps.quests.tasks')->get(), 200);
     }
@@ -42,21 +42,17 @@ class GameController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Must be logged in to create a new game.'
-            );
-
-            return response()->json($message, 401); // Unauthorized
+            ), 401); // Unauthorized
         }
 
         if ($user->user_group == 0) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User group has no rights to create a new game.'
-            );
-
-            return response()->json($message, 403); // Forbidden
+            ), 403); // Forbidden
         }
 
     	$validator = Validator::make($request->all(), [
@@ -74,111 +70,79 @@ class GameController extends Controller
         $validated_data = $validator->validated();
         $validated_data['owner_id'] = $user->id;
 
-        $game = Game::create($validated_data);
-
-        $message = array(
+        return response()->json(array(
             'status' => 'success',
             'message' => 'A new game has been added.',
-            'game' => $game
-        );
-
-        return response()->json($message, 201); // Created
+            'game' => Game::create($validated_data)
+        ), 201); // Created
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function read(Request $request)
+    public function get($id)
     {
-    	$validator = Validator::make($request->all(), [
-            'id' => 'numeric|required'
-        ]);
+        $game = Game::find($id);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $validated_data = $validator->validated();
-
-        $data = Game::find($validated_data['id']);
-
-        if (!$data) {
-            $message = array(
+        if (!$game) {
+            return response()->json(array(
                 'status' => 'error',
-                'message' => 'Game with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+                'message' => 'Invalid game ID.'
+            ), 422);
         }
 
-        return response()->json($data, 200);
+        return response()->json($game, 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function read_hierarchy(Request $request)
+    public function getHierarchy($id)
     {
-    	$validator = Validator::make($request->all(), [
-            'id' => 'numeric|required'
-        ]);
+        $game = Game::with('maps.quests.tasks')->find($id);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $validated_data = $validator->validated();
-
-        $data = Game::with('maps.quests.tasks')->get()->find($validated_data['id']);
-
-        if (!$data) {
-            $message = array(
+        if (!$game) {
+            return response()->json(array(
                 'status' => 'error',
-                'message' => 'Game with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+                'message' => 'Invalid game ID.'
+            ), 422);
         }
 
-        return response()->json($data, 200);
+        return response()->json($game, 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $user = auth()->user();
 
         if (!$user) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Must be logged in to update games.'
-            );
-
-            return response()->json($message, 401); // Unauthorized
+            ), 401); // Unauthorized
         }
 
         if ($user->user_group == 0) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User group has no rights to update games.'
-            );
-
-            return response()->json($message, 403); // Forbidden
+            ), 403); // Forbidden
         }
 
     	$validator = Validator::make($request->all(), [
-            'id' => 'numeric|required',
             'title' => 'string|required|max:255',
             'description' => 'string|max:65535|nullable',
             'image_url' => 'string|max:255|nullable',
@@ -191,40 +155,35 @@ class GameController extends Controller
         }
 
         $validated_data = $validator->validated();
-        $data = Game::find($validated_data['id']);
+        $game = Game::find($id);
 
-        if (!$data) {
-            $message = array(
+        if (!$game) {
+            return response()->json(array(
                 'status' => 'error',
-                'message' => 'Game with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+                'message' => 'Invalid game ID.'
+            ), 422);
         }
 
-        if ($data->owner_id != $user->id) {
-            $message = array(
+        if ($game->owner_id != $user->id) {
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User has no rights to update specified game.'
-            );
-
-            return response()->json($message, 403);
+            ), 403);
         }
         
-        $data->title = $validated_data['title'];
-        $data->description = empty($validated_data['description']) ? $data->description : $validated_data['description'];
-        $data->image_url = empty($validated_data['image_url']) ? $data->image_url : $validated_data['image_url'];
-        $data->genre = empty($validated_data['genre']) ? $data->genre : $validated_data['genre'];
-        $data->rating = empty($validated_data['rating']) ? $data->rating : $validated_data['rating'];
+        $game->title = $validated_data['title'];
+        $game->description = empty($validated_data['description']) ? $game->description : $validated_data['description'];
+        $game->image_url = empty($validated_data['image_url']) ? $game->image_url : $validated_data['image_url'];
+        $game->genre = empty($validated_data['genre']) ? $game->genre : $validated_data['genre'];
+        $game->rating = empty($validated_data['rating']) ? $game->rating : $validated_data['rating'];
 
-        $data->save();
-        $message = array(
+        $game->save();
+
+        return response()->json(array(
             'status' => 'success',
             'message' => 'Specified game has been successfully updated.',
-            'game' => $data
-        );
-
-        return response()->json($message, 200);
+            'game' => $game
+        ), 200);
     }
 
     /**
@@ -233,64 +192,46 @@ class GameController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request)
+    public function delete($id)
     {
         $user = auth()->user();
 
         if (!$user) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'Must be logged in to delete a game.'
-            );
-
-            return response()->json($message, 401); // Unauthorized
+            ), 401); // Unauthorized
         }
 
         if ($user->user_group == 0) {
-            $message = array(
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User group has no rights to delete games.'
-            );
-
-            return response()->json($message, 403); // Forbidden
+            ), 403); // Forbidden
         }
 
-    	$validator = Validator::make($request->all(), [
-            'id' => 'numeric|required'
-        ]);
+        $game = Game::find($id);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $validated_data = $validator->validated();
-        $data = Game::find($validated_data['id']);
-
-        if (!$data) {
-            $message = array(
+        if (!$game) {
+            return response()->json(array(
                 'status' => 'error',
-                'message' => 'Game with given ID could not be found.'
-            );
-
-            return response()->json($message, 404);
+                'message' => 'Invalid game ID.'
+            ), 422);
         }
 
-        if ($data->owner_id != $user->id) {
-            $message = array(
+        if ($game->owner_id != $user->id) {
+            return response()->json(array(
                 'status' => 'error',
                 'message' => 'User has no rights to delete specified games.'
-            );
-
-            return response()->json($message, 403);
+            ), 403);
         }
 
-        Game::destroy($data->id);
-        $message = array(
+        Game::destroy($game->id);
+
+        return response()->json(array(
             'status' => 'success',
             'message' => 'Specified game has been successfully deleted.',
-            'game' => $data
-        );
-
-        return response()->json($message, 200);
+            'game' => $game
+        ), 200);
     }
 }
