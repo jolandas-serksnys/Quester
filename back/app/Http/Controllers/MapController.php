@@ -176,18 +176,19 @@ class MapController extends Controller
             ), 422);
         }
 
-        $game = Game::find($validated_data['game_id']);
+        $game_source = Game::find($map->game_id);
+        $game_destination = Game::find($validated_data['game_id']);
 
-        if ($game->owner_id != $user->id) {
+        if ($game_source->owner_id != $user->id || $game_destination->owner_id != $user->id) {
             return response()->json(array(
                 'status' => 'error',
-                'message' => 'User has no rights to update maps of specified game.'
+                'message' => 'User has no rights to update maps of specified game (-s).'
             ), 403);
         }
         
         $map->title = $validated_data['title'];
-        $map->description = empty($validated_data['description']) ? $map->description : $validated_data['description'];
-        $map->image_url = empty($validated_data['image_url']) ? $map->image_url : $validated_data['image_url'];
+        $map->description = empty($validated_data['description']) ? null : $validated_data['description'];
+        $map->image_url = empty($validated_data['image_url']) ? null : $validated_data['image_url'];
         $map->game_id = $validated_data['game_id'];
 
         $map->save();

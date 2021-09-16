@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\QuestController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,16 @@ Route::group([
     Route::get('/{id}', [QuestController::class, 'get']);
     Route::put('/{id}', [QuestController::class, 'update']);
     Route::delete('/{id}', [QuestController::class, 'delete']); 
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'tasks'
+], function ($router) {
+    Route::get('/', [TaskController::class, 'getAll']);
+
+    Route::post('/', [TaskController::class, 'create']);
+    Route::get('/{id}', [TaskController::class, 'get']);
+    Route::put('/{id}', [TaskController::class, 'update']);
+    Route::delete('/{id}', [TaskController::class, 'delete']); 
 });

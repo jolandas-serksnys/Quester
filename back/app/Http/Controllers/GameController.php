@@ -172,10 +172,10 @@ class GameController extends Controller
         }
         
         $game->title = $validated_data['title'];
-        $game->description = empty($validated_data['description']) ? $game->description : $validated_data['description'];
-        $game->image_url = empty($validated_data['image_url']) ? $game->image_url : $validated_data['image_url'];
-        $game->genre = empty($validated_data['genre']) ? $game->genre : $validated_data['genre'];
-        $game->rating = empty($validated_data['rating']) ? $game->rating : $validated_data['rating'];
+        $game->description = empty($validated_data['description']) ? null : $validated_data['description'];
+        $game->image_url = empty($validated_data['image_url']) ? null : $validated_data['image_url'];
+        $game->genre = empty($validated_data['genre']) ? null : $validated_data['genre'];
+        $game->rating = empty($validated_data['rating']) ? null : $validated_data['rating'];
 
         $game->save();
 

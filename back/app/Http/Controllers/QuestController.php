@@ -167,16 +167,6 @@ class QuestController extends Controller
             ), 422);
         }
 
-        $map = Map::find($quest->map_id);
-        $game = Game::find($map->game_id);
-
-        if ($game->owner_id != $user->id) {
-            return response()->json(array(
-                'status' => 'error',
-                'message' => 'User has no rights to update specified game.'
-            ), 403);
-        }
-
     	$validator = Validator::make($request->all(), [
             'title' => 'string|required|max:255',
             'description' => 'string|max:65535|nullable',
@@ -192,11 +182,24 @@ class QuestController extends Controller
 
         $validated_data = $validator->validated();
 
+        $map_source = Map::find($quest->map_id);
+        $game_source = Game::find($map_source->game_id);
+
+        $map_destination = Map::find($validated_data['map_id']);
+        $game_destination = Game::find($map_destination->game_id);
+
+        if ($game_source->owner_id != $user->id || $game_destination->owner_id != $user->id) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'User has no rights to update specified game (-s).'
+            ), 403);
+        }
+
         $quest->title = $validated_data['title'];
-        $quest->description = empty($validated_data['description']) ? $quest->description : $validated_data['description'];
-        $quest->image_url = empty($validated_data['image_url']) ? $quest->image_url : $validated_data['image_url'];
-        $quest->map_coord_x = empty($validated_data['map_coord_x']) ? $quest->map_coord_x : $validated_data['map_coord_x'];
-        $quest->map_coord_y = empty($validated_data['map_coord_y']) ? $quest->map_coord_y : $validated_data['map_coord_y'];
+        $quest->description = empty($validated_data['description']) ? null : $validated_data['description'];
+        $quest->image_url = empty($validated_data['image_url']) ? null : $validated_data['image_url'];
+        $quest->map_coord_x = empty($validated_data['map_coord_x']) ? null : $validated_data['map_coord_x'];
+        $quest->map_coord_y = empty($validated_data['map_coord_y']) ? null : $validated_data['map_coord_y'];
         $quest->map_id = $validated_data['map_id'];
 
         $quest->save();
