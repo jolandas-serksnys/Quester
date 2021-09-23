@@ -35,48 +35,26 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'games'
 ], function ($router) {
-    Route::get('/', [GameController::class, 'getAll']);
     Route::get('/hierarchy', [GameController::class, 'getAllHierarchy']);
     Route::get('/hierarchy/{gameId}', [GameController::class, 'getHierarchy']);
 
+    Route::get('/', [GameController::class, 'getAll']);
     Route::post('/', [GameController::class, 'create']);
     Route::get('/{gameId}', [GameController::class, 'get']);
     Route::put('/{gameId}', [GameController::class, 'update']);
     Route::delete('/{gameId}', [GameController::class, 'delete']);  
 
     Route::get('/{gameId}/maps', [GameController::class, 'getGameMaps']);  
+    Route::post('/{gameId}/maps', [GameController::class, 'createGameMap']);  
     Route::get('/{gameId}/maps/{mapId}', [GameController::class, 'getGameMap']);  
+    Route::put('/{gameId}/maps/{mapId}', [GameController::class, 'updateGameMap']);  
+    Route::delete('/{gameId}/maps/{mapId}', [GameController::class, 'deleteGameMap']);  
 
     Route::get('/{gameId}/maps/{mapId}/quests', [GameController::class, 'getGameMapQuests']);  
+    Route::post('/{gameId}/maps/{mapId}/quests', [GameController::class, 'createGameMapQuest']);  
     Route::get('/{gameId}/maps/{mapId}/quests/{questId}', [GameController::class, 'getGameMapQuest']);  
-});
-
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'maps'
-], function ($router) {
-    Route::get('/', [MapController::class, 'getAll']);
-    Route::get('/hierarchy', [MapController::class, 'getAllHierarchy']);
-    Route::get('/hierarchy/{id}', [MapController::class, 'getHierarchy']);
-
-    Route::post('/', [MapController::class, 'create']);
-    Route::get('/{id}', [MapController::class, 'get']);
-    Route::put('/{id}', [MapController::class, 'update']);
-    Route::delete('/{id}', [MapController::class, 'delete']);
-});
-
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'quests'
-], function ($router) {
-    Route::get('/', [QuestController::class, 'getAll']);
-    Route::get('/hierarchy', [QuestController::class, 'getAllHierarchy']);
-    Route::get('/hierarchy/{id}', [QuestController::class, 'getHierarchy']);
-
-    Route::post('/', [QuestController::class, 'create']);
-    Route::get('/{id}', [QuestController::class, 'get']);
-    Route::put('/{id}', [QuestController::class, 'update']);
-    Route::delete('/{id}', [QuestController::class, 'delete']); 
+    Route::put('/{gameId}/maps/{mapId}/quests/{questId}', [GameController::class, 'updateGameMapQuest']);  
+    Route::delete('/{gameId}/maps/{mapId}/quests/{questId}', [GameController::class, 'deleteGameMapQuest']);  
 });
 
 Route::group([
