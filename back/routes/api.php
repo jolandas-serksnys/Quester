@@ -44,27 +44,21 @@ Route::group([
     Route::put('/{gameId}', [GameController::class, 'update']);
     Route::delete('/{gameId}', [GameController::class, 'delete']);  
 
-    Route::get('/{gameId}/maps', [GameController::class, 'getGameMaps']);  
-    Route::post('/{gameId}/maps', [GameController::class, 'createGameMap']);  
-    Route::get('/{gameId}/maps/{mapId}', [GameController::class, 'getGameMap']);  
-    Route::put('/{gameId}/maps/{mapId}', [GameController::class, 'updateGameMap']);  
-    Route::delete('/{gameId}/maps/{mapId}', [GameController::class, 'deleteGameMap']);  
+    Route::get('/{gameId}/maps', [MapController::class, 'getGameMaps']);  
+    Route::post('/{gameId}/maps', [MapController::class, 'createGameMap']);  
+    Route::get('/{gameId}/maps/{mapId}', [MapController::class, 'getGameMap']);  
+    Route::put('/{gameId}/maps/{mapId}', [MapController::class, 'updateGameMap']);  
+    Route::delete('/{gameId}/maps/{mapId}', [MapController::class, 'deleteGameMap']);  
 
-    Route::get('/{gameId}/maps/{mapId}/quests', [GameController::class, 'getGameMapQuests']);  
-    Route::post('/{gameId}/maps/{mapId}/quests', [GameController::class, 'createGameMapQuest']);  
-    Route::get('/{gameId}/maps/{mapId}/quests/{questId}', [GameController::class, 'getGameMapQuest']);  
-    Route::put('/{gameId}/maps/{mapId}/quests/{questId}', [GameController::class, 'updateGameMapQuest']);  
-    Route::delete('/{gameId}/maps/{mapId}/quests/{questId}', [GameController::class, 'deleteGameMapQuest']);  
-});
+    Route::get('/{gameId}/maps/{mapId}/quests', [QuestController::class, 'getGameMapQuests']);  
+    Route::post('/{gameId}/maps/{mapId}/quests', [QuestController::class, 'createGameMapQuest']);  
+    Route::get('/{gameId}/maps/{mapId}/quests/{questId}', [QuestController::class, 'getGameMapQuest']);  
+    Route::put('/{gameId}/maps/{mapId}/quests/{questId}', [QuestController::class, 'updateGameMapQuest']);  
+    Route::delete('/{gameId}/maps/{mapId}/quests/{questId}', [QuestController::class, 'deleteGameMapQuest']);  
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'tasks'
-], function ($router) {
-    Route::get('/', [TaskController::class, 'getAll']);
-
-    Route::post('/', [TaskController::class, 'create']);
-    Route::get('/{id}', [TaskController::class, 'get']);
-    Route::put('/{id}', [TaskController::class, 'update']);
-    Route::delete('/{id}', [TaskController::class, 'delete']); 
+    Route::get('/{gameId}/maps/{mapId}/quests/{questId}/tasks', [TaskController::class, 'getGameMapQuestTasks']);  
+    Route::post('/{gameId}/maps/{mapId}/quests/{questId}/tasks', [TaskController::class, 'createGameMapQuestTask']);  
+    Route::get('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'getGameMapQuestTask']);  
+    Route::put('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'updateGameMapQuestTask']);  
+    Route::delete('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'deleteGameMapQuestTask']);  
 });
