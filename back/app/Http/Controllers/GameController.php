@@ -17,32 +17,16 @@ use App\Http\Controllers\MapController;
 
 class GameController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function getAll()
     {
         return response()->json(Game::all(), 200);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function getAllHierarchy()
     {
         return response()->json(Game::with('maps.quests.tasks')->get(), 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         $user = auth()->user();
@@ -83,12 +67,6 @@ class GameController extends Controller
         ), 201); // Created
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function get($gameId)
     {
         $game = Game::find($gameId);
@@ -103,12 +81,6 @@ class GameController extends Controller
         return response()->json($game, 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function getHierarchy($gameId)
     {
         $game = Game::with('maps.quests.tasks')->find($gameId);
@@ -123,13 +95,6 @@ class GameController extends Controller
         return response()->json($game, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $gameId)
     {
         $user = auth()->user();
@@ -192,12 +157,6 @@ class GameController extends Controller
         ), 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function delete($gameId)
     {
         $user = auth()->user();
@@ -242,13 +201,9 @@ class GameController extends Controller
     }
 
     // -------------------------------------------------
+    // GAME MAPS
+    // -------------------------------------------------
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function getGameMaps($gameId)
     {
         $game = Game::find($gameId);
@@ -263,12 +218,6 @@ class GameController extends Controller
         return response()->json(Map::where('maps.game_id', $gameId)->get(), 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function createGameMap(Request $request, $gameId)
     {
         $user = auth()->user();
@@ -298,8 +247,6 @@ class GameController extends Controller
         }
 
         $validated_data = $validator->validated();
-
-        // --------- GAME OWNER CHECK ---------
         
         $game = Game::find($gameId);
 
@@ -317,8 +264,6 @@ class GameController extends Controller
             ), 403);
         }
 
-        // --------- --------- ---------
-
         $validated_data['game_id'] = $gameId;
 
         return response()->json(array(
@@ -327,14 +272,7 @@ class GameController extends Controller
             'map' => Map::create($validated_data)
         ), 201); // Created
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @param  int  $mapId
-     * @return \Illuminate\Http\Response
-     */
+    
     public function getGameMap($gameId, $mapId)
     {
         $game = Game::find($gameId);
@@ -357,14 +295,7 @@ class GameController extends Controller
 
         return response()->json($map, 200);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function updateGameMap(Request $request, $gameId, $mapId)
     {
         $user = auth()->user();
@@ -432,13 +363,7 @@ class GameController extends Controller
             'map' => $map
         ), 200);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function deleteGameMap($gameId, $mapId)
     {
         $user = auth()->user();
@@ -491,14 +416,10 @@ class GameController extends Controller
         ), 200);
     }
 
-    // -----------------------------------------------------------
+    // -------------------------------------------------
+    // GAME MAPS QUESTS
+    // -------------------------------------------------
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function getGameMapQuests($gameId, $mapId)
     {
         $game = Game::find($gameId);
@@ -531,12 +452,6 @@ class GameController extends Controller
         return response()->json($quest, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function createGameMapQuest(Request $request, $gameId, $mapId)
     {
         $user = auth()->user();
@@ -607,12 +522,6 @@ class GameController extends Controller
         ), 201); // Created
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function getGameMapQuest($gameId, $mapId, $questId)
     {
         $game = Game::find($gameId);
@@ -645,14 +554,6 @@ class GameController extends Controller
         return response()->json($quest, 200);
     }
 
-    
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function updateGameMapQuest(Request $request, $gameId, $mapId, $questId)
     {
         $user = auth()->user();
@@ -733,13 +634,7 @@ class GameController extends Controller
             'quest' => $quest
         ), 200);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function deleteGameMapQuest($gameId, $mapId, $questId)
     {
         $user = auth()->user();
