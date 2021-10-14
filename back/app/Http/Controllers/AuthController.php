@@ -106,12 +106,13 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     protected function createNewToken($token){
-        return response()->json([
+        $return = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
-        ]);
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ];
+
+        return response()->json(array_merge($return, auth()->user()->toArray()));
     }
 
 }

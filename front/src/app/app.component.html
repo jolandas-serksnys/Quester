@@ -1,7 +1,7 @@
 <!-- nav -->
 <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
   <div class="navbar-nav">
-      <span>{{currentUser.user.name}}</span>
+      <span>{{currentUser.name}}</span>
       <a class="nav-item nav-link" routerLink="/" routerLinkActive="active">Home</a>
       <a class="nav-item nav-link" (click)="logout()">Logout</a>
   </div>

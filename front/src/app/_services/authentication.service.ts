@@ -16,7 +16,7 @@ export class AuthenticationService {
         private router: Router,
         private http: HttpClient
     ) {
-        this.currentUserSubject = new BehaviorSubject<User>(null);
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
@@ -27,6 +27,7 @@ export class AuthenticationService {
     login(email: string, password: string) {
         return this.http.post<any>(`${environment.apiUrl}/auth/login`, { email, password })
             .pipe(map(user => {
+                localStorage.setItem('user', JSON.stringify(user));
                 this.currentUserSubject.next(user);
                 this.startRefreshTokenTimer();
                 return user;
@@ -43,6 +44,7 @@ export class AuthenticationService {
     refreshToken() {
         return this.http.post<any>(`${environment.apiUrl}/auth/refresh`, {})
             .pipe(map((user) => {
+                localStorage.setItem('user', JSON.stringify(user));
                 this.currentUserSubject.next(user);
                 this.startRefreshTokenTimer();
                 return user;

@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 
 use App\Models\Task;
-use App\Models\Quest;
-use App\Models\Map;
 use App\Models\Game;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class TaskController extends Controller
 {
