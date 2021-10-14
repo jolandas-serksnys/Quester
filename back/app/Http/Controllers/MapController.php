@@ -10,21 +10,11 @@ use App\Models\Game;
 
 class MapController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function getAll()
     {
         return response()->json(Map::all(), 200);
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function getAllHierarchy()
     {
         return response()->json(Map::with("quests.tasks")->get(), 200);
@@ -170,7 +160,7 @@ class MapController extends Controller
         if ($user->user_group == 0) {
             return response()->json(array(
                 'status' => 'error',
-                'message' => 'User group has no rights to create a new game.'
+                'message' => 'User group has no rights to create, update or delete maps.'
             ), 403); // Forbidden
         }
 

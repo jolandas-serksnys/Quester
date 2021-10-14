@@ -8,26 +8,15 @@ use Validator;
 use App\Models\Quest;
 use App\Models\Map;
 use App\Models\Game;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class QuestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function getAll()
     {
         return response()->json(Quest::all(), 200);
     }
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function getAllHierarchy()
     {
         return response()->json(Quest::with("tasks")->get(), 200);
@@ -44,7 +33,7 @@ class QuestController extends Controller
             return response()->json($validator->errors(), 422);
         }
         
-        return response()->json( Quest::where('map_id', $mapId)->with('tasks')->get(), 200);
+        return response()->json(Quest::where('map_id', $mapId)->with('tasks')->get(), 200);
     }
 
     public function createGameMapQuest(Request $request, $gameId, $mapId)
@@ -178,14 +167,14 @@ class QuestController extends Controller
         if (!$user) {
             return response()->json(array(
                 'status' => 'error',
-                'message' => 'Must be logged in to create a new game.'
+                'message' => 'Must be logged in to create a quests.'
             ), 401); // Unauthorized
         }
 
         if ($user->user_group == 0) {
             return response()->json(array(
                 'status' => 'error',
-                'message' => 'User group has no rights to create a new game.'
+                'message' => 'User group has no rights to create, update or delete quests.'
             ), 403); // Forbidden
         }
 

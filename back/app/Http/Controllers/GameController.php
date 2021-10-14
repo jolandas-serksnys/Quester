@@ -156,7 +156,7 @@ class GameController extends Controller
         if ($user->user_group == 0) {
             return response()->json(array(
                 'status' => 'error',
-                'message' => 'User group has no rights to create a new game.'
+                'message' => 'User group has no rights to create, update or delete games.'
             ), 403); // Forbidden
         }
 
