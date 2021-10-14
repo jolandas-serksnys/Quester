@@ -6,15 +6,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { JwtInterceptor, ErrorInterceptor, appInitializer } from './_helpers';
+import { AuthenticationService } from './_services';
+
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { AuthenticationService } from './_services';
+import { GameComponent } from './_views/game/game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,

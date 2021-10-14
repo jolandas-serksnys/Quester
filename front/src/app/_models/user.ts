@@ -1,11 +1,10 @@
-export class User {
+import { Base } from ".";
+
+export class User extends Base {
     access_token: string;
     token_type: string;
     expires_in: number;
-    id: number;
     name: string;
     email: string;
     email_verified_at?: string;
-    created_at: string;
-    updated_at: string;
 }
