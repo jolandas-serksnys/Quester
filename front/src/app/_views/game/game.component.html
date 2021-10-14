@@ -1,1 +1,48 @@
-<p>game works! {{game | json}}</p>
+<app-navbar></app-navbar>
+<div class="game-header position-absolute" style="--game-header-image: url({{game.image_url}})"></div>
+<div class="container position-relative">
+    <header class="text-light py-5" style="text-shadow: 0 .25rem 1.5rem black;">
+        <h1 class="display-3">{{game.title}}</h1>
+    </header>
+    <div class="card border-0 shadow">
+        <div class="row gap-0">
+            <div class="col-8 pe-0">
+                <div class="card-body">
+                    <h6>About game</h6>
+                    <div [innerHTML]="game.description"></div>
+                </div>
+                <div class="card-body text-light" style="background: #343a40">
+                    <h6>Game maps</h6>
+                    <select class="form-select bg-dark text-light border-0">
+                        <option *ngFor="let map of maps; index as i" (click)="selectMap(i)">{{map.title}}</option>
+                    </select>
+                </div>
+                <div class="map-container" *ngIf="maps[selectedMapIndex]">
+                    {{maps[selectedMapIndex].title}}
+                </div>
+            </div>
+            <div class="col-4 ps-0 border-s">
+                <div class="card-body bg-secondary text-light h-100 rounded-end">
+                    <ul class="list-group">
+                        <li class="list-group-item bg-transparent text-light">
+                            <h6>Game by</h6>
+                            <h4 class="m-0">{{game.owner.name}}</h4>
+                        </li>
+                        <li class="list-group-item bg-transparent text-light" *ngIf="game.rating">
+                            <h6>Rating</h6>
+                            <h4 class="m-0">{{game.rating}}</h4>
+                        </li>
+                        <li class="list-group-item bg-transparent text-light" *ngIf="game.created_at">
+                            <h6>Added on</h6>
+                            <h4 class="m-0">{{game.created_at | date}}</h4>
+                        </li>
+                        <li class="list-group-item bg-transparent text-light" *ngIf="game.updated_at">
+                            <h6>Last updated on</h6>
+                            <h4 class="m-0">{{game.updated_at | date}}</h4>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

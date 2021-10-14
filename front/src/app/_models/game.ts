@@ -1,4 +1,4 @@
-import { Base } from ".";
+import { Base, User } from ".";
 
 export class Game extends Base {
     title: string;
@@ -7,4 +7,5 @@ export class Game extends Base {
     genre: string;
     rating: string;
     owner_id: number;
+    owner?: User;
 }

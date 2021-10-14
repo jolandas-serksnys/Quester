@@ -26,4 +26,8 @@ class Game extends Model
     public function maps(){
         return $this->hasMany( 'App\Models\Map', 'game_id', 'id' );
     }
+
+    public function owner(){
+        return $this->hasOne( 'App\Models\User', 'id', 'owner_id' );
+    }
 }

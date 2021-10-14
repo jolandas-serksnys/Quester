@@ -57,7 +57,7 @@ class GameController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        return response()->json(Game::find($gameId), 200);
+        return response()->json(Game::with('owner')->find($gameId), 200);
     }
 
     public function getHierarchy(Request $request, $gameId)
