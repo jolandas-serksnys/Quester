@@ -36,7 +36,7 @@ class MapController extends Controller
 
     public function createGameMap(Request $request, $gameId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['game_id'] = $gameId;
@@ -83,7 +83,7 @@ class MapController extends Controller
     
     public function updateGameMap(Request $request, $gameId, $mapId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['map_id'] = $mapId;
@@ -118,7 +118,7 @@ class MapController extends Controller
     
     public function deleteGameMap(Request $request, $gameId, $mapId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['map_id'] = $mapId;
@@ -147,7 +147,7 @@ class MapController extends Controller
         ), 200);
     }
 
-    public function checkUser() {
+    public function checkAdmin() {
         $user = auth()->user();
 
         if (!$user) {

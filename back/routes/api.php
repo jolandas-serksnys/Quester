@@ -61,4 +61,6 @@ Route::group([
     Route::get('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'getGameMapQuestTask']);  
     Route::put('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'updateGameMapQuestTask']);  
     Route::delete('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'deleteGameMapQuestTask']);  
+
+    Route::post('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}/toggle', [TaskController::class, 'toggleTaskCompleted']);  
 });

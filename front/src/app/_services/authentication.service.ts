@@ -36,6 +36,7 @@ export class AuthenticationService {
 
     logout() {
         this.http.post<any>(`${environment.apiUrl}/auth/logout`, {}).subscribe();
+        localStorage.removeItem('user');
         this.stopRefreshTokenTimer();
         this.currentUserSubject.next(null);
         this.router.navigate(['/login']);

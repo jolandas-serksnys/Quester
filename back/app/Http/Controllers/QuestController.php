@@ -38,7 +38,7 @@ class QuestController extends Controller
 
     public function createGameMapQuest(Request $request, $gameId, $mapId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['map_id'] = $mapId;
@@ -92,7 +92,7 @@ class QuestController extends Controller
 
     public function updateGameMapQuest(Request $request, $gameId, $mapId, $questId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['quest_id'] = $questId;
@@ -130,7 +130,7 @@ class QuestController extends Controller
     
     public function deleteGameMapQuest(Request $request, $gameId, $mapId, $questId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['quest_id'] = $questId;
@@ -161,7 +161,7 @@ class QuestController extends Controller
         ), 200);
     }
 
-    public function checkUser() {
+    public function checkAdmin() {
         $user = auth()->user();
 
         if (!$user) {

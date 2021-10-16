@@ -34,7 +34,7 @@ export class GameComponent implements OnInit {
   }
 
   selectMap(i) {
-
+    this.selectedMapIndex = i;
   }
 
 }

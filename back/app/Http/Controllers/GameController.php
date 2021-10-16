@@ -21,7 +21,7 @@ class GameController extends Controller
 
     public function create(Request $request)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
     	$validator = Validator::make($request->all(), [
@@ -76,7 +76,7 @@ class GameController extends Controller
 
     public function update(Request $request, $gameId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['id'] = $gameId;
@@ -113,7 +113,7 @@ class GameController extends Controller
 
     public function delete(Request $request, $gameId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['id'] = $gameId;
@@ -143,7 +143,7 @@ class GameController extends Controller
         ), 200);
     }
 
-    public function checkUser() {
+    public function checkAdmin() {
         $user = auth()->user();
 
         if (!$user) {

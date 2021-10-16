@@ -8,6 +8,7 @@ use Validator;
 
 use App\Models\Task;
 use App\Models\Game;
+use App\Models\TaskTrackerEntry;
 
 class TaskController extends Controller
 {
@@ -39,7 +40,7 @@ class TaskController extends Controller
 
     public function createGameMapQuestTask(Request $request, $gameId, $mapId, $questId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['map_id'] = $mapId;
@@ -83,7 +84,7 @@ class TaskController extends Controller
 
     public function updateGameMapQuestTask(Request $request, $gameId, $mapId, $questId, $taskId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['map_id'] = $mapId;
@@ -122,7 +123,7 @@ class TaskController extends Controller
 
     public function deleteGameMapQuestTask(Request $request, $gameId, $mapId, $questId, $taskId)
     {
-        if($userCheck = $this->checkUser())
+        if($userCheck = $this->checkAdmin())
             return $userCheck;
 
         $request['map_id'] = $mapId;
@@ -155,13 +156,54 @@ class TaskController extends Controller
         ), 200);
     }
 
-    public function checkUser() {
+    public function toggleTaskCompleted(Request $request, $gameId, $mapId, $questId, $taskId)
+    {
+        if($userCheck = $this->checkUser())
+            return $userCheck;
+
+        $request['map_id'] = $mapId;
+        $request['quest_id'] = $questId;
+        $request['task_id'] = $taskId;
+        $validator = Validator::make($request->all(), [
+            'map_id' => 'exists:maps,id,game_id,' . $gameId,
+            'quest_id' => 'exists:quests,id,map_id,' . $mapId,
+            'task_id' => 'exists:tasks,id,quest_id,' . $questId
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        
+        $userId = auth()->user()->id;
+        $toggleVal = false;
+
+        $taskTrackerEntry = TaskTrackerEntry::where('user_id', $userId)->where('task_id', $taskId)->first();
+
+        if($taskTrackerEntry) {
+            TaskTrackerEntry::destroy($taskTrackerEntry->id);
+        } else {
+            $toggleVal = true;
+            TaskTrackerEntry::create([
+                'user_id' => $userId,
+                'task_id' => $taskId
+            ]);
+        }
+        
+        return response()->json(array(
+            'status' => 'success',
+            'message' => 'Specified task has been successfully toggled.',
+            'task_id' => $taskId,
+            'is_completed' => $toggleVal
+        ), 200);
+    }
+
+    public function checkAdmin() {
         $user = auth()->user();
 
         if (!$user) {
             return response()->json(array(
                 'status' => 'error',
-                'message' => 'Must be logged in to create new tasks.'
+                'message' => 'Must be logged in to create, update or delete tasks.'
             ), 401); // Unauthorized
         }
 
@@ -170,6 +212,19 @@ class TaskController extends Controller
                 'status' => 'error',
                 'message' => 'User group has no rights to create, update or delete tasks.'
             ), 403); // Forbidden
+        }
+
+        return false;
+    }
+
+    public function checkUser() {
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(array(
+                'status' => 'error',
+                'message' => 'Must be logged in to complete this action.'
+            ), 401); // Unauthorized
         }
 
         return false;

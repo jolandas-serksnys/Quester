@@ -7,11 +7,21 @@
     z-index: 0; 
     min-height: 300pt; 
     height: min(60vh, 600pt); 
-    background: linear-gradient(transparent, var(--bs-body-bg)), var(--game-header-image) center, var(--bs-body-bg);
+    background: linear-gradient(transparent, var(--bs-body-bg)), var(--game-header-image) center, var(--bs-secondary);
     background-size: cover; 
 }
 
 .map-container {
     width: 100%;
     position: relative;
+}
+
+.map-container img {
+    width: 100%;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    border-top-left-radius: 0 !important;
 }
