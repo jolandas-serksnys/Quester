@@ -197,6 +197,27 @@ class TaskController extends Controller
         ), 200);
     }
 
+    public function getTasksCompleted(Request $request, $gameId, $mapId, $questId)
+    {
+        if($userCheck = $this->checkUser())
+            return $userCheck;
+
+        $request['map_id'] = $mapId;
+        $request['quest_id'] = $questId;
+        $validator = Validator::make($request->all(), [
+            'map_id' => 'exists:maps,id,game_id,' . $gameId,
+            'quest_id' => 'exists:quests,id,map_id,' . $mapId
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        
+        $taskTrackerEntries = TaskTrackerEntry::where('user_id', auth()->user()->id)->get();
+        
+        return response()->json($taskTrackerEntries, 200);
+    }
+
     public function checkAdmin() {
         $user = auth()->user();
 
