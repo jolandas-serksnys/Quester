@@ -21,13 +21,20 @@
                         <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             {{user.name}}
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><h6 class="dropdown-header">{{user.email}}</h6></li>
-                            <li><a class="dropdown-item" href="#">My games</a></li>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="navbarDropdown" style="min-width: 16rem;">
+                            <ng-container *ngIf="user.user_group >= 1">
+                                <li><h6 class="dropdown-header d-flex gap-2"><i class="bi bi-briefcase mr-2 text-primary"></i> Admin tools</h6></li>
+                                <li><a class="dropdown-item" href="#">Manage games</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            </ng-container>
+                            <ng-container *ngIf="user.user_group >= 2">
+                                <li><h6 class="dropdown-header d-flex gap-2"><i class="bi bi-nut text-primary"></i> Master tools</h6></li>
+                                <li><a class="dropdown-item" href="#">Manage all games</a></li>
+                                <li><a class="dropdown-item" href="#">Manage users</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            </ng-container>
+                            <li><h6 class="dropdown-header d-flex gap-2"><i class="bi bi-person text-primary"></i> {{user.email}}</h6></li>
                             <li><a class="dropdown-item" href="#">Account settings</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                             <li><a class="dropdown-item" href="#">Logout</a></li>
                         </ul>
                     </li>

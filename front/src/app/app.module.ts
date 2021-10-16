@@ -13,6 +13,9 @@ import { LoginComponent } from './login/login.component';
 import { GameComponent } from './_views/game/game.component';
 import { NavbarComponent } from './_components/navbar/navbar.component';
 import { FooterComponent } from './_components/footer/footer.component';
+import { GamesComponent } from './_views/games/games.component';
+import { HeaderComponent } from './_components/header/header.component';
+import { GamesGridComponent } from './_components/games-grid/games-grid.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { FooterComponent } from './_components/footer/footer.component';
     LoginComponent,
     GameComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    GamesComponent,
+    HeaderComponent,
+    GamesGridComponent
   ],
   imports: [
     BrowserModule,

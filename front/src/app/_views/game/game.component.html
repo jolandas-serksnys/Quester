@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="game-header position-absolute" style="--game-header-image: url({{game.image_url}})"></div>
+<app-header [imageUrl]="game.image_url"></app-header>
 <div class="container position-relative">
     <header class="text-light py-5" style="text-shadow: 0 .25rem 1.5rem black;">
         <h1 class="display-3">{{game.title}}</h1>
@@ -11,19 +11,21 @@
                     <h6>About game</h6>
                     <div [innerHTML]="game.description"></div>
                 </div>
-                <div class="card-body text-light" style="background: #343a40">
-                    <h6>Game maps</h6>
-                    <select class="form-select bg-dark text-light border-0" #map (change)="selectMap(map.value)">
-                        <option *ngFor="let map of maps; index as i" [value]="i">{{map.title}}</option>
-                    </select>
-                    <ng-container *ngIf="maps[selectedMapIndex].description">
-                        <h6 class="mt-3">About map</h6>
-                        <div [innerHTML]="maps[selectedMapIndex].description"></div>
-                    </ng-container>
-                </div>
-                <div class="map-container" *ngIf="maps[selectedMapIndex]">
-                    <img src="{{maps[selectedMapIndex].image_url}}" alt="" class="rounded-start">
-                </div>
+                <ng-container *ngIf="maps && maps.length > 0">
+                    <div class="card-body text-light" style="background: #343a40">
+                        <h6>Game maps</h6>
+                        <select class="form-select bg-dark text-light border-0" #map (change)="selectMap(map.value)">
+                            <option *ngFor="let map of maps; index as i" [value]="i">{{map.title}}</option>
+                        </select>
+                        <ng-container *ngIf="maps[selectedMapIndex].description">
+                            <h6 class="mt-3">About map</h6>
+                            <div [innerHTML]="maps[selectedMapIndex].description"></div>
+                        </ng-container>
+                    </div>
+                    <div class="map-container" *ngIf="maps[selectedMapIndex]">
+                        <img src="{{maps[selectedMapIndex].image_url}}" alt="" class="rounded-start">
+                    </div>
+                </ng-container>
             </div>
             <div class="col-4 ps-0 border-s">
                 <div class="card-body bg-secondary text-light h-100 rounded-end">

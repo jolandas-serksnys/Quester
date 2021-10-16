@@ -5,6 +5,7 @@ export class User extends Base {
     token_type: string;
     expires_in: number;
     name: string;
+    user_group: number;
     email: string;
     email_verified_at?: string;
 }

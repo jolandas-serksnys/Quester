@@ -1,10 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
+h1:last-child, 
+h2:last-child, 
+h3:last-child, 
+h4:last-child, 
+h5:last-child, 
+h6:last-child, 
+p:last-child {
+    margin-bottom: 0;
+}
+
 .game-header {
+    position: absolute;
     top: 0; 
     left: 0; 
     right: 0; 
-    z-index: 0; 
+    z-index: -1; 
     min-height: 300pt; 
     height: min(60vh, 600pt); 
     background: linear-gradient(transparent, var(--bs-body-bg)), var(--game-header-image) center, var(--bs-secondary);
@@ -24,4 +35,60 @@
     -o-user-drag: none;
     user-drag: none;
     border-top-left-radius: 0 !important;
+}
+
+.games-grid {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat( auto-fit, minmax(14rem, 1fr));;
+}
+
+.games-grid .item {
+    width: 100%;
+    padding-top: calc(4/3 * 100%);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+    text-align: left;
+    background: var(--bs-secondary);
+}
+
+.games-grid .item:hover {
+    margin: -.5rem;
+    width: calc(100% + 1rem);
+    z-index: 2;
+}
+
+.games-grid .item .image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background: var(--game-image) center;
+    background-size: cover;
+}
+
+.games-grid .item .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all .1s ease-in-out;
+}
+
+.games-grid .item:hover .inner {
+    background: rgba(0,0,0,.35);
+    padding: .5rem;
+}
+
+.games-grid .item .inner .part {
+    padding: 1rem 1.2rem;
+    filter: drop-shadow(0 .25rem .5rem rgba(0,0,0,.25));
 }
