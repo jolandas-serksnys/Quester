@@ -1,0 +1,12 @@
+<nav class="nav fixed-bottom bottom-nav text-light">
+    <div class="container">
+        <div class="d-flex justify-content-around">
+            <button class="btn btn-lg d-flex flex-column p-0 border-0" *ngFor="let item of items" routerLink="{{item.link}}" >
+                <div class="w-100" style="height: 2pt;" routerLinkActive="bg-primary"></div>
+                <div class="text-muted px-4 py-3">
+                    <i routerLinkActive="text-primary" [class]="item.text ? 'bi bi-' + item.icon + ' me-md-2' :  'bi bi-' + item.icon"></i> <span class="d-none d-md-inline" routerLinkActive="text-light">{{item.text}}</span>
+                </div>
+            </button>
+        </div>
+    </div>
+</nav>

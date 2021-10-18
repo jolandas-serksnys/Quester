@@ -7,7 +7,7 @@ import { GameComponent } from './_views/game/game.component';
 import { GamesComponent } from './_views/games/games.component';
 
 const routes: Routes = [
-  { path: '', component: GamesComponent, canActivate: [AuthGuard] },
+  { path: 'games', component: GamesComponent },
   { path: 'login', component: LoginComponent },
 
   { path: 'g/:gameId', component: GameComponent },

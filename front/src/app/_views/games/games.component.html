@@ -1,6 +1,11 @@
-<app-navbar></app-navbar>
-<app-header [imageUrl]="'https://i.pinimg.com/originals/e7/13/4b/e7134b7c8013e649b6249d1dd1b7b843.jpg'"></app-header>
-<div class="container">
-	<app-games-grid [games]="games"></app-games-grid>
+<div class="app-flex">
+	<div>
+		<app-header [imageUrl]="'https://i.pinimg.com/originals/e7/13/4b/e7134b7c8013e649b6249d1dd1b7b843.jpg'"></app-header>
+		<div class="container">
+			<app-view-header text="Quester"></app-view-header>
+			<app-games-grid [games]="games"></app-games-grid>
+		</div>
+	</div>
+	<app-footer></app-footer>
 </div>
-<app-footer></app-footer>
+<app-bottom-nav></app-bottom-nav>

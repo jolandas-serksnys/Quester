@@ -1,49 +1,45 @@
-<app-navbar></app-navbar>
-<app-header [imageUrl]="game.image_url"></app-header>
-<div class="container position-relative">
-    <header class="text-light py-5" style="text-shadow: 0 .25rem 1.5rem black;">
-        <h1 class="display-3">{{game.title}}</h1>
-    </header>
-    <div class="card border-0 shadow">
-        <div class="row gap-0">
-			<div class="col-8 pe-0">
-				<div class="card-body" *ngIf="game.description">
-					<h6>About game</h6>
-					<div [innerHTML]="game.description"></div>
-				</div>
-				<app-map [gameId]="gameId"></app-map>
-			</div>
-            <div class="col-4 ps-0 border-s">
-                <div class="card-body bg-secondary text-light h-100 rounded-end">
-                    <ul class="list-group">
-                        <li class="list-group-item bg-transparent text-light" *ngIf="game.owner">
-                            <h6>Game by</h6>
+<div class="app-flex">
+	<div>
+		<app-header [imageUrl]="game.image_url"></app-header>
+		<div class="container">
+			<app-view-header [text]="game.title"></app-view-header>
+            <div class="card border-0 shadow">
+                <div class="px-4 py-3 d-flex flex-column gap-3">
+                    <div class="game-info-grid">
+                        <div *ngIf="game.owner">
+                            <h6 class="text-primary">Game by</h6>
                             <h4 class="m-0">{{game.owner.name}}</h4>
-                        </li>
-                        <li class="list-group-item bg-transparent text-light" *ngIf="game.rating">
-                            <h6>Rating</h6>
+                        </div>
+                        <div *ngIf="game.rating">
+                            <h6 class="text-primary">Rating</h6>
                             <h4 class="m-0">{{game.rating}}</h4>
-                        </li>
-						<li class="list-group-item bg-transparent text-light" *ngIf="game.genre">
-							<h6>Genre</h6>
-							<h4 class="m-0">{{game.genre}}</h4>
-						</li>
-                        <li class="list-group-item bg-transparent text-light" *ngIf="game.created_at">
-                            <h6>Added on</h6>
+                        </div>
+                        <div *ngIf="game.genre">
+                            <h6 class="text-primary">Genre</h6>
+                            <h4 class="m-0">{{game.genre}}</h4>
+                        </div>
+                        <div *ngIf="game.created_at">
+                            <h6 class="text-primary">Added on</h6>
                             <h4 class="m-0">{{game.created_at | date}}</h4>
-                        </li>
-                        <li class="list-group-item bg-transparent text-light" *ngIf="game.updated_at">
-                            <h6>Last updated on</h6>
+                        </div>
+                        <div *ngIf="game.updated_at">
+                            <h6 class="text-primary">Last updated on</h6>
                             <h4 class="m-0">{{game.updated_at | date}}</h4>
-                        </li>
-						<li class="list-group-item bg-transparent text-light" *ngIf="maps">
-							<h6>Maps available</h6>
-							<h4 class="m-0">{{maps.length}}</h4>
-						</li>
-                    </ul>
+                        </div>
+                        <div *ngIf="maps">
+                            <h6 class="text-primary">Maps available</h6>
+                            <h4 class="m-0">{{maps.length}}</h4>
+                        </div>
+                    </div>
+                    <div *ngIf="game.description">
+                        <h6>About game</h6>
+                        <div [innerHTML]="game.description"></div>
+                    </div>
                 </div>
+                <app-map [gameId]="gameId"></app-map>
             </div>
-        </div>
-    </div>
+		</div>
+	</div>
+	<app-footer></app-footer>
 </div>
-<app-footer></app-footer>
+<app-bottom-nav></app-bottom-nav>

@@ -19,6 +19,8 @@ import { GamesGridComponent } from './_components/games-grid/games-grid.componen
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalGameComponent } from './_components/modal-game/modal-game.component';
 import { MapComponent } from './_components/map/map.component';
+import { BottomNavComponent } from './_components/bottom-nav/bottom-nav.component';
+import { ViewHeaderComponent } from './_components/view-header/view-header.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { MapComponent } from './_components/map/map.component';
     HeaderComponent,
     GamesGridComponent,
     ModalGameComponent,
-    MapComponent
+    MapComponent,
+    BottomNavComponent,
+    ViewHeaderComponent
   ],
   imports: [
     BrowserModule,
