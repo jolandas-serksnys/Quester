@@ -9,6 +9,7 @@ import { QuestService } from '@app/_services/quest.service';
   templateUrl: './game.component.html',
 })
 export class GameComponent implements OnInit {
+  gameId: number;
   game: Game = new Game();
   maps: Map[] = [];
   quests: Quest[] = [];
@@ -17,18 +18,16 @@ export class GameComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private gameService: GameService,
-    private mapService: MapService,
-    private questService: QuestService
+    private mapService: MapService
     ) { }
 
   ngOnInit(): void {
-    let id = <number><unknown>this.route.snapshot.paramMap.get('gameId');
-    this.gameService.get(id).subscribe(r => {
+    this.gameId = <number><unknown>this.route.snapshot.paramMap.get('gameId');
+    this.gameService.get(this.gameId).subscribe(r => {
       this.game = r;
 
       this.mapService.getGameMaps(r.id).subscribe(r2 => {
         this.maps = r2;
-        this.selectMap(this.selectedMapIndex)
       }, e2 => {
 
       })
@@ -36,13 +35,4 @@ export class GameComponent implements OnInit {
 
     })
   }
-
-  selectMap(i) {
-    this.selectedMapIndex = i;
-    
-    this.questService.getGameMapQuests(this.game.id, this.maps[this.selectedMapIndex].id).subscribe(r => {
-      this.quests = r;
-    })
-  }
-
 }

@@ -1,25 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 
-h1:last-child, 
-h2:last-child, 
-h3:last-child, 
-h4:last-child, 
-h5:last-child, 
-h6:last-child, 
+h1:last-child,
+h2:last-child,
+h3:last-child,
+h4:last-child,
+h5:last-child,
+h6:last-child,
 p:last-child {
     margin-bottom: 0;
 }
 
 .game-header {
     position: absolute;
-    top: 0; 
-    left: 0; 
-    right: 0; 
-    z-index: -1; 
-    min-height: 300pt; 
-    height: min(60vh, 600pt); 
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    min-height: 300pt;
+    height: min(60vh, 600pt);
     background: linear-gradient(transparent, var(--bs-body-bg)), var(--game-header-image) center, var(--bs-secondary);
-    background-size: cover; 
+    background-size: cover;
 }
 
 .map-container {
@@ -37,27 +37,55 @@ p:last-child {
     border-top-left-radius: 0 !important;
 }
 
+.map-container .quests-container  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
 .games-grid {
     position: relative;
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat( auto-fit, minmax(14rem, 1fr));;
+    grid-template-columns: repeat( auto-fit, minmax(14rem, 1fr));
+    -grid-template-columns: repeat( auto-fit, minmax(20rem, 1fr));
 }
 
 .games-grid .item {
     width: 100%;
     padding-top: calc(4/3 * 100%);
+    -padding-top: 50%;
+    position: relative;
+    background: transparent;
+    border: 0;
+}
+
+.games-grid .item .card {
     overflow: hidden;
     cursor: pointer;
     transition: all .1s ease-in-out;
-    text-align: left;
     background: var(--bs-secondary);
+    position: absolute;
+    text-align: left;
+    border: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .games-grid .item:hover {
-    margin: -.5rem;
-    width: calc(100% + 1rem);
     z-index: 2;
+}
+
+.games-grid .item:hover .card {
+    top: -.5rem;
+    left: -.5rem;
+    right: -.5rem;
+    bottom: -.5rem;
 }
 
 .games-grid .item .image {
@@ -84,11 +112,61 @@ p:last-child {
 }
 
 .games-grid .item:hover .inner {
-    background: rgba(0,0,0,.35);
+    background: rgba(0, 0, 0, .35);
     padding: .5rem;
 }
 
 .games-grid .item .inner .part {
     padding: 1rem 1.2rem;
-    filter: drop-shadow(0 .25rem .5rem rgba(0,0,0,.25));
+    filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .25));
+}
+
+.hex-container {
+    position: absolute;
+    left: calc(var(--pos-x) * 1%);
+    top: calc(var(--pos-y) * 1%);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.hex-container .hex {
+    width: calc(10em / 4);
+    height: calc(17.32em / 4);
+    border-radius: 1em/.25em;
+    background: var(--bs-dark);
+    opacity: .75;
+    transition: all .1s;
+}
+
+.hex-container:hover .hex {
+    background: var(--bs-primary);
+    opacity: 1;
+}
+
+.hex-container .hex:before,
+.hex-container .hex:after {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    background: inherit;
+    content: '';
+}
+
+.hex-container .hex:before {
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+}
+
+.hex-container .hex:after {
+    -webkit-transform: rotate(-60deg);
+    transform: rotate(-60deg);
+}
+
+.hex-container .inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }

@@ -16,6 +16,9 @@ import { FooterComponent } from './_components/footer/footer.component';
 import { GamesComponent } from './_views/games/games.component';
 import { HeaderComponent } from './_components/header/header.component';
 import { GamesGridComponent } from './_components/games-grid/games-grid.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalGameComponent } from './_components/modal-game/modal-game.component';
+import { MapComponent } from './_components/map/map.component';
 
 @NgModule({
   declarations: [
@@ -27,13 +30,16 @@ import { GamesGridComponent } from './_components/games-grid/games-grid.componen
     FooterComponent,
     GamesComponent,
     HeaderComponent,
-    GamesGridComponent
+    GamesGridComponent,
+    ModalGameComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     //{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },

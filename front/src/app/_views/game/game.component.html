@@ -6,27 +6,13 @@
     </header>
     <div class="card border-0 shadow">
         <div class="row gap-0">
-            <div class="col-8 pe-0">
-                <div class="card-body">
-                    <h6>About game</h6>
-                    <div [innerHTML]="game.description"></div>
-                </div>
-                <ng-container *ngIf="maps && maps.length > 0">
-                    <div class="card-body text-light" style="background: #343a40">
-                        <h6>Game maps</h6>
-                        <select class="form-select bg-dark text-light border-0" #map (change)="selectMap(map.value)">
-                            <option *ngFor="let map of maps; index as i" [value]="i">{{map.title}}</option>
-                        </select>
-                        <ng-container *ngIf="maps[selectedMapIndex].description">
-                            <h6 class="mt-3">About map</h6>
-                            <div [innerHTML]="maps[selectedMapIndex].description"></div>
-                        </ng-container>
-                    </div>
-                    <div class="map-container" *ngIf="maps[selectedMapIndex]">
-                        <img src="{{maps[selectedMapIndex].image_url}}" alt="" class="rounded-start">
-                    </div>
-                </ng-container>
-            </div>
+			<div class="col-8 pe-0">
+				<div class="card-body" *ngIf="game.description">
+					<h6>About game</h6>
+					<div [innerHTML]="game.description"></div>
+				</div>
+				<app-map [gameId]="gameId"></app-map>
+			</div>
             <div class="col-4 ps-0 border-s">
                 <div class="card-body bg-secondary text-light h-100 rounded-end">
                     <ul class="list-group">
@@ -38,6 +24,10 @@
                             <h6>Rating</h6>
                             <h4 class="m-0">{{game.rating}}</h4>
                         </li>
+						<li class="list-group-item bg-transparent text-light" *ngIf="game.genre">
+							<h6>Genre</h6>
+							<h4 class="m-0">{{game.genre}}</h4>
+						</li>
                         <li class="list-group-item bg-transparent text-light" *ngIf="game.created_at">
                             <h6>Added on</h6>
                             <h4 class="m-0">{{game.created_at | date}}</h4>
@@ -46,6 +36,10 @@
                             <h6>Last updated on</h6>
                             <h4 class="m-0">{{game.updated_at | date}}</h4>
                         </li>
+						<li class="list-group-item bg-transparent text-light" *ngIf="maps">
+							<h6>Maps available</h6>
+							<h4 class="m-0">{{maps.length}}</h4>
+						</li>
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,59 @@
+<div class="position-relative rounded" style="overflow: hidden;">
+	<div class="card border-0 shadow">
+		<div class="row gap-0">
+			<div class="col-12 col-lg-8 pe-lg-0">
+				<div class="px-4 py-3">
+					<h3>{{game.title}}</h3>
+				</div>
+				<div class="card-body" *ngIf="game.description">
+					<h6>About game</h6>
+					<div [innerHTML]="game.description"></div>
+				</div>
+				<app-map [gameId]="game.id"></app-map>
+			</div>
+			<div class="col-12 col-lg-4 ps-lg-0">
+				<div class="card-body bg-secondary text-light h-100 rounded-end d-flex flex-column justify-content-between gap-2">
+					<div>
+						<div class="btn-group w-100 shadow mb-3" *ngIf="false">
+							<button class="btn btn-light" (click)="setSidebarView('game')"><i class="bi bi-controller"></i> About Game</button>
+							<button class="btn btn-light" (click)="setSidebarView('quests')"><i class="bi bi-book"></i> Quests</button>
+						</div>
+						<div>
+							<ul class="list-group">
+								<li class="list-group-item bg-transparent text-light" *ngIf="game.owner">
+									<h6>Game by</h6>
+									<h4 class="m-0">{{game.owner.name}}</h4>
+								</li>
+								<li class="list-group-item bg-transparent text-light" *ngIf="game.rating">
+									<h6>Rating</h6>
+									<h4 class="m-0">{{game.rating}}</h4>
+								</li>
+								<li class="list-group-item bg-transparent text-light" *ngIf="game.genre">
+									<h6>Genre</h6>
+									<h4 class="m-0">{{game.genre}}</h4>
+								</li>
+								<li class="list-group-item bg-transparent text-light" *ngIf="game.created_at">
+									<h6>Added on</h6>
+									<h4 class="m-0">{{game.created_at | date}}</h4>
+								</li>
+								<li class="list-group-item bg-transparent text-light" *ngIf="game.updated_at">
+									<h6>Last updated on</h6>
+									<h4 class="m-0">{{game.updated_at | date}}</h4>
+								</li>
+								<li class="list-group-item bg-transparent text-light" *ngIf="maps">
+									<h6>Maps available</h6>
+									<h4 class="m-0">{{maps.length}}</h4>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="d-flex flex-column gap-2">
+						<hr/>
+						<button class="btn btn-lg btn-dark shadow" type="button" routerLink="/g/{{game.id}}/{{getUrlTitle(game.title)}}" (click)="activeModal.close()" >Open in page</button>
+						<button class="btn btn-lg btn-dark shadow" type="button" (click)="activeModal.close()">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
