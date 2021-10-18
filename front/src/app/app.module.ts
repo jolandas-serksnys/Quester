@@ -21,6 +21,7 @@ import { ModalGameComponent } from './_components/modal-game/modal-game.componen
 import { MapComponent } from './_components/map/map.component';
 import { BottomNavComponent } from './_components/bottom-nav/bottom-nav.component';
 import { ViewHeaderComponent } from './_components/view-header/view-header.component';
+import { GameInfoGridComponent } from './_components/game-info-grid/game-info-grid.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ViewHeaderComponent } from './_components/view-header/view-header.compo
     ModalGameComponent,
     MapComponent,
     BottomNavComponent,
-    ViewHeaderComponent
+    ViewHeaderComponent,
+    GameInfoGridComponent
   ],
   imports: [
     BrowserModule,

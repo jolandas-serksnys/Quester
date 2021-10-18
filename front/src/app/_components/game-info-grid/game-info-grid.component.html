@@ -1,0 +1,26 @@
+<div class="game-info-grid">
+	<div *ngIf="game.owner">
+		<h6 class="text-primary">Game by</h6>
+		<h4 class="m-0">{{game.owner.name}}</h4>
+	</div>
+	<div *ngIf="game.rating">
+		<h6 class="text-primary">Rating</h6>
+		<h4 class="m-0">{{game.rating}}</h4>
+	</div>
+	<div *ngIf="game.genre">
+		<h6 class="text-primary">Genre</h6>
+		<h4 class="m-0">{{game.genre}}</h4>
+	</div>
+	<div *ngIf="game.maps_count">
+		<h6 class="text-primary">Maps available</h6>
+		<h4 class="m-0">{{game.maps_count}}</h4>
+	</div>
+	<div *ngIf="game.created_at">
+		<h6 class="text-primary">Added on</h6>
+		<h4 class="m-0">{{game.created_at | date}}</h4>
+	</div>
+	<div *ngIf="game.updated_at">
+		<h6 class="text-primary">Last updated on</h6>
+		<h4 class="m-0">{{game.updated_at | date}}</h4>
+	</div>
+</div>

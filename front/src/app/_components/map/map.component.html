@@ -1,23 +1,30 @@
-<div class="p-3 text-light d-flex flex-column gap-2" style="background: #343a40">
-	<div *ngIf="maps.length > 1">
-		<h6>Game maps</h6>
-		<select class="form-select bg-dark text-light border-0" #map (change)="selectMap(map.value)">
-            <option *ngFor="let map of maps; index as i" [value]="i">[{{map.id}}] {{map.title}}</option>
-        </select>
-	</div>
-	<div *ngIf="maps[selectedMapIndex] && maps[selectedMapIndex].description">
-		<h6>About map</h6>
-		<div [innerHTML]="maps[selectedMapIndex].description"></div>
-	</div>
-</div>
-<div class="map-container" *ngIf="maps[selectedMapIndex]">
-    <div class="quests-container">
-        <div class="hex-container" *ngFor="let quest of quests" style="--pos-x: {{quest.map_coord_x}}; --pos-y: {{quest.map_coord_y}}">
-            <div class="hex"></div>
-            <div class="inner">
-                <h1 class="text-light"><i class="bi bi-exclamation"></i></h1>
+<div class="p-3 text-light row" style="background: #343a40" *ngIf="maps && maps.length > 0">
+	<div class="col-8">
+        <div class="d-flex flex-column gap-3">
+            <div *ngIf="maps.length > 1">
+                <h6>Game maps</h6>
+                <select class="form-select bg-dark text-light border-0" #map (change)="selectMap(map.value)">
+                    <option *ngFor="let map of maps; index as i" [value]="i">[{{map.id}}] {{map.title}}</option>
+                </select>
+            </div>
+            <div *ngIf="maps[selectedMapIndex] && maps[selectedMapIndex].description">
+                <h6>About map</h6>
+                <div [innerHTML]="maps[selectedMapIndex].description"></div>
+            </div>
+            <div class="map-container" *ngIf="maps[selectedMapIndex]">
+                <div class="quests-container">
+                    <div class="hex-container" *ngFor="let quest of quests" style="--pos-x: {{quest.map_coord_x}}; --pos-y: {{quest.map_coord_y}}">
+                        <div class="hex"></div>
+                        <div class="inner">
+                            <h1 class="text-light"><i class="bi bi-exclamation"></i></h1>
+                        </div>
+                    </div>
+                </div>
+                <img class="rounded shadow" src="{{maps[selectedMapIndex].image_url}}">
             </div>
         </div>
     </div>
-	<img src="{{maps[selectedMapIndex].image_url}}">
+    <div class="col-4">
+        <h6>Quests</h6>
+    </div>
 </div>

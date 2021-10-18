@@ -11,7 +11,7 @@ class GameController extends Controller
 {
     public function getAll()
     {
-        return response()->json(Game::all(), 200);
+        return response()->json(Game::with('owner')->withCount('maps')->get(), 200);
     }
 
     public function getAllHierarchy()
@@ -57,7 +57,7 @@ class GameController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        return response()->json(Game::with('owner')->find($gameId), 200);
+        return response()->json(Game::with('owner')->withCount('maps')->find($gameId), 200);
     }
 
     public function getHierarchy(Request $request, $gameId)

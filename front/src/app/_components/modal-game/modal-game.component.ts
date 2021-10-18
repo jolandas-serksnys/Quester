@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Game, Map } from '@app/_models';
-import { MapService } from '@app/_services';
+import { Game } from '@app/_models';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -9,21 +8,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalGameComponent implements OnInit {
   @Input() game: Game = new Game();
-  maps: Map[] = [];
   sidebarView: string = 'game';
 
   constructor(
-    public activeModal: NgbActiveModal,
-    private mapService: MapService
+    public activeModal: NgbActiveModal
   ) { }
 
   ngOnInit(): void {
-    this.mapService.getGameMaps(this.game.id).subscribe(r => {
-      this.maps = r;
-      //this.selectMap(this.selectedMapIndex)
-    }, e => {
-
-    })
   }
 
   getUrlTitle(title) {

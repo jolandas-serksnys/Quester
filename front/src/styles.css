@@ -43,7 +43,6 @@ p:last-child {
     -moz-user-drag: none;
     -o-user-drag: none;
     user-drag: none;
-    border-top-left-radius: 0 !important;
 }
 
 .map-container .quests-container  {
@@ -202,6 +201,7 @@ p:last-child {
 .app-footer {
     position: static;
     bottom: 0;
-    margin: 2rem 0 4rem 0;
+    margin-top: 2rem;
+    padding-bottom: 4rem;
     background: hsl(0, 0%, 7.5%);
 }

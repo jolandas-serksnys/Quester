@@ -29,6 +29,9 @@ export class MapComponent implements OnInit {
   }
 
   selectMap(i) {
+    if(!this.maps[this.selectedMapIndex])
+      return;
+
     this.selectedMapIndex = i;
     
     this.quests = [];

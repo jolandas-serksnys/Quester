@@ -8,4 +8,5 @@ export class Game extends Base {
     rating: string;
     owner_id: number;
     owner?: User;
+    maps_count?: number;
 }
