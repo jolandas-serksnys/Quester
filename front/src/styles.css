@@ -205,3 +205,43 @@ p:last-child {
     padding-bottom: 4rem;
     background: hsl(0, 0%, 7.5%);
 }
+
+.tasks-timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tasks-timeline:before {
+    content: '';
+    position: absolute;
+    width: 3pt;
+    top: 1rem;
+    bottom: 1rem;
+    left: 0;
+    background: rgba(255,255,255,.1);
+    border-radius: 1rem;
+}
+
+.tasks-timeline .task {
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.tasks-timeline .task:before {
+    content: '';
+    position: absolute;
+    left: -3pt;
+    width: 9pt;
+    height: 9pt;
+    background: #fff;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2pt solid var(--bs-dark);
+}
+
+.tasks-timeline .task:hover:before {
+    background: var(--bs-primary);
+}

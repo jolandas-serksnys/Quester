@@ -13,6 +13,7 @@ export class MapComponent implements OnInit {
   maps: Map[] = [];
   quests: Quest[] = [];
   selectedMapIndex: number = 0;
+  selectedQuestIndex: number = 0;
 
   constructor(
     private mapService: MapService,
@@ -29,7 +30,7 @@ export class MapComponent implements OnInit {
   }
 
   selectMap(i) {
-    if(!this.maps[this.selectedMapIndex])
+    if(!this.maps[i])
       return;
 
     this.selectedMapIndex = i;
@@ -38,6 +39,13 @@ export class MapComponent implements OnInit {
     this.questService.getGameMapQuests(this.maps[this.selectedMapIndex].game_id, this.maps[this.selectedMapIndex].id).subscribe(r => {
       this.quests = r;
     })
+  }
+
+  selectQuest(i) {
+    if(!this.quests[i])
+      return;
+
+    this.selectedQuestIndex = i;
   }
 
 }

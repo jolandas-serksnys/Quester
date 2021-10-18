@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'g/:gameId/:gameTitle', component: GameComponent },
 
   // otherwise redirect to home
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'games' }
 ];
 
 @NgModule({

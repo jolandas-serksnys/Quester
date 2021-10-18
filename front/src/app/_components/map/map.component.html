@@ -1,5 +1,5 @@
 <div class="p-3 text-light row" style="background: #343a40" *ngIf="maps && maps.length > 0">
-	<div class="col-8">
+	<div class="col">
         <div class="d-flex flex-column gap-3">
             <div *ngIf="maps.length > 1">
                 <h6>Game maps</h6>
@@ -24,7 +24,16 @@
             </div>
         </div>
     </div>
-    <div class="col-4">
-        <h6>Quests</h6>
+    <div class="col-12 col-lg-4" *ngIf="quests[selectedQuestIndex]">
+        <div class="d-flex flex-column gap-2">
+            <h6>Quests</h6>
+            <h3>{{quests[selectedQuestIndex].title}}</h3>
+            <div class="tasks-timeline">
+                <div class="task" *ngFor="let task of quests[selectedQuestIndex].tasks">
+                    <h6>{{task.title}}</h6>
+                    <p>{{task.description}}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
