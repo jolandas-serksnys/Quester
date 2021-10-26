@@ -3,7 +3,7 @@
 		<app-header [imageUrl]="game.image_url"></app-header>
 		<div class="container">
 			<app-view-header [text]="game.title"></app-view-header>
-            <div class="card border-0 shadow">
+            <div class="card border-0 shadow" style="overflow: hidden;">
                 <div class="px-4 py-3 d-flex flex-column gap-3">
                     <app-game-info-grid [game]="game"></app-game-info-grid>
                     <div *ngIf="game.description">

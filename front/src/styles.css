@@ -151,11 +151,13 @@ p:last-child {
     background: var(--bs-dark);
     opacity: .75;
     transition: all .1s;
+    transform: scale(.9);
 }
 
 .hex-container:hover .hex {
     background: var(--bs-primary);
     opacity: 1;
+    transform: scale(1);
 }
 
 .hex-container .hex:before,

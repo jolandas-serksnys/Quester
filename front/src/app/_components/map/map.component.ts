@@ -15,6 +15,8 @@ export class MapComponent implements OnInit {
   selectedMapIndex: number = 0;
   selectedQuestIndex: number = 0;
 
+  loadingQuestData = false;
+
   constructor(
     private mapService: MapService,
     private questService: QuestService
@@ -42,7 +44,7 @@ export class MapComponent implements OnInit {
   }
 
   selectQuest(i) {
-    if(!this.quests[i])
+    if(!this.quests[i] && i != -1)
       return;
 
     this.selectedQuestIndex = i;

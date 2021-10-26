@@ -28,6 +28,6 @@ class Game extends Model
     }
 
     public function owner(){
-        return $this->hasOne( 'App\Models\User', 'id', 'owner_id' );
+        return $this->hasOne( 'App\Models\User', 'id', 'owner_id' )->select(['id', 'name']);
     }
 }

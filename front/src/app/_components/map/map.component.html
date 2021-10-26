@@ -13,7 +13,7 @@
             </div>
             <div class="map-container" *ngIf="maps[selectedMapIndex]">
                 <div class="quests-container">
-                    <div class="hex-container" *ngFor="let quest of quests" style="--pos-x: {{quest.map_coord_x}}; --pos-y: {{quest.map_coord_y}}">
+                    <div class="hex-container" *ngFor="let quest of quests; index as j" style="--pos-x: {{quest.map_coord_x}}; --pos-y: {{quest.map_coord_y}}" (click)="selectQuest(j)">
                         <div class="hex"></div>
                         <div class="inner">
                             <h1 class="text-light"><i class="bi bi-exclamation"></i></h1>
@@ -24,14 +24,17 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-lg-4" *ngIf="quests[selectedQuestIndex]">
-        <div class="d-flex flex-column gap-2">
+    <div class="col-12 col-lg-4">
+        <div class="d-flex flex-column gap-2" *ngIf="selectedQuestIndex != -1 && quests[selectedQuestIndex]">
             <h6>Quests</h6>
             <h3>{{quests[selectedQuestIndex].title}}</h3>
             <div class="tasks-timeline">
                 <div class="task" *ngFor="let task of quests[selectedQuestIndex].tasks">
                     <h6>{{task.title}}</h6>
-                    <p>{{task.description}}</p>
+                    <div>
+                        <p class="m-0">{{task.description}}</p>
+                        <button class="btn btn-sm text-primary p-0 fw-bold">Mark as completed</button>
+                    </div>
                 </div>
             </div>
         </div>
