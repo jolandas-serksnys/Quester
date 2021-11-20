@@ -26,4 +26,8 @@ export class GamesGridComponent implements OnInit {
     });
     modalRef.componentInstance.game = game;
   }
+
+  getUrlTitle(title) {
+    return title.replace(/\s+/g, '-').toLowerCase();
+  }
 }

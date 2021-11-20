@@ -1,45 +1,74 @@
 <nav class="navbar sticky-top navbar-expand-lg bg-transparent">
-    <div class="container py-2">
-        <div class="w-100 rounded navbar navbar-dark bg-dark p-3 shadow">
-            <a class="navbar-brand ms-2" href="#"><i class="bi bi-map"></i> Quester</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                </ul>
-                <form class="d-flex ms-auto">
-                    <input class="form-control me-2 bg-transparent border-0 text-light" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
-                </form>
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown" *ngIf="user">
-                        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{user.name}}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="navbarDropdown" style="min-width: 16rem;">
-                            <ng-container *ngIf="user.user_group >= 1">
-                                <li><h6 class="dropdown-header d-flex gap-2"><i class="bi bi-briefcase mr-2 text-primary"></i> Admin tools</h6></li>
-                                <li><a class="dropdown-item" href="#">Manage games</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                            </ng-container>
-                            <ng-container *ngIf="user.user_group >= 2">
-                                <li><h6 class="dropdown-header d-flex gap-2"><i class="bi bi-nut text-primary"></i> Master tools</h6></li>
-                                <li><a class="dropdown-item" href="#">Manage all games</a></li>
-                                <li><a class="dropdown-item" href="#">Manage users</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                            </ng-container>
-                            <li><h6 class="dropdown-header d-flex gap-2"><i class="bi bi-person text-primary"></i> {{user.email}}</h6></li>
-                            <li><a class="dropdown-item" href="#">Account settings</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+  <div class="container py-2">
+    <div class="w-100 rounded navbar navbar-dark bg-dark p-3 shadow">
+      <a class="navbar-brand ms-2" href="#"><i class="bi bi-map"></i> Quester</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+          class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" routerLink="/games" routerLinkActive="active">Games</a>
+          </li>
+        </ul>
+        <div class="d-flex ms-auto">
+          <!--
+                  <form class="d-flex ms-auto">
+                      <input class="form-control me-2 bg-transparent border-0 text-light" type="search"
+                          placeholder="Search" aria-label="Search">
+                      <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
+                  </form>
+                  -->
         </div>
+        <ul class="navbar-nav" *ngIf="user">
+          <li class="nav-item dropdown">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              {{user.name}}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="navbarDropdown"
+              style="min-width: 16rem;">
+              <ng-container *ngIf="user.user_group >= 1">
+                <li>
+                  <h6 class="dropdown-header d-flex gap-2"><i class="bi bi-briefcase mr-2 text-primary"></i> Admin tools
+                  </h6>
+                </li>
+                <li><a class="dropdown-item" routerLink="/games/owned">Owned games</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+              </ng-container>
+              <ng-container *ngIf="user.user_group >= 2">
+                <li>
+                  <h6 class="dropdown-header d-flex gap-2"><i class="bi bi-nut text-primary"></i>
+                    Master tools</h6>
+                </li>
+                <li><a class="dropdown-item" href="#">Manage all games</a></li>
+                <li><a class="dropdown-item" href="#">Manage users</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+              </ng-container>
+              <li>
+                <h6 class="dropdown-header d-flex gap-2"><i class="bi bi-person text-primary"></i>{{user.email}}</h6>
+              </li>
+              <li><a class="dropdown-item" href="#">Account settings</a></li>
+              <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav" *ngIf="!user">
+          <li class="nav-item">
+            <button type="button" class="btn btn-dark" routerLink="/sign-in">
+              Sign In
+            </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-dark" routerLink="/sign-up">
+              Sign Up
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 </nav>

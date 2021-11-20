@@ -1,0 +1,61 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Add a new Game</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div *ngIf="error" class="alert alert-danger mt-0 mb-3">{{error}}</div>
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" formControlName="title" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+        <div *ngIf="submitted && f.title.errors" class="form-text invalid-feedback">
+          <div *ngIf="f.title.errors.required">This field is required</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea formControlName="description" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.description.errors }"></textarea>
+        <div *ngIf="submitted && f.description.errors" class="form-text invalid-feedback">
+          <div *ngIf="f.description.errors.required">This field is required</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="image_url" class="form-label">Image URL</label>
+        <input type="text" formControlName="image_url" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.image_url.errors }" />
+        <div *ngIf="submitted && f.image_url.errors" class="form-text invalid-feedback">
+          <div *ngIf="f.image_url.errors.required">This field is required</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="genre" class="form-label">Genre</label>
+        <textarea formControlName="genre" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.genre.errors }"></textarea>
+        <div *ngIf="submitted && f.genre.errors" class="form-text invalid-feedback">
+          <div *ngIf="f.genre.errors.required">This field is required</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Rating</label>
+        <div class="d-flex gap-2 flex-column">
+          <div class="d-flex gap-2 align-items-center" *ngFor="let rating of ratings; index as i">
+            <input type="radio" formControlName="rating" [id]="'r-' + i" [value]="rating.value">
+            <label for="{{'r-' + i}}">{{rating.text}}</label>
+          </div>
+        </div>
+        <div *ngIf="submitted && f.rating.errors" class="form-text invalid-feedback">
+          <div *ngIf="f.rating.errors.required">This field is required</div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+      (click)="activeModal.dismiss('Cross click')">Close</button>
+    <button type="submit" class="btn btn-outline-dark" (click)="onSubmit()">Submit</button>
+  </div>
+</div>

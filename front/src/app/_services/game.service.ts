@@ -16,6 +16,10 @@ export class GameService {
     return this.http.get<Game[]>(`${environment.apiUrl}/games`);
   }
 
+  getOwned() {
+    return this.http.get<Game[]>(`${environment.apiUrl}/games/owned`);
+  }
+
   create(body) {
     return this.http.post<{ status: string, message: string, game: Game }>(`${environment.apiUrl}/games`, body);
   }

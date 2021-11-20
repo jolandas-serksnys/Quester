@@ -34,6 +34,16 @@ export class AuthenticationService {
             }));
     }
 
+    register(name: string, email: string, password: string, password_confirmation: string) {
+        return this.http.post<any>(`${environment.apiUrl}/auth/register`, { name, email, password, password_confirmation })
+            .pipe(map(user => {
+                localStorage.setItem('user', JSON.stringify(user));
+                this.currentUserSubject.next(user);
+                this.startRefreshTokenTimer();
+                return user;
+            }));
+    }
+
     logout() {
         this.http.post<any>(`${environment.apiUrl}/auth/logout`, {}).subscribe();
         localStorage.removeItem('user');

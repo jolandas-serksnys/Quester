@@ -8,8 +8,6 @@ import { AppComponent } from './app.component';
 import { JwtInterceptor, ErrorInterceptor, appInitializer } from './_helpers';
 import { AuthenticationService } from './_services';
 
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
 import { GameComponent } from './_views/game/game.component';
 import { NavbarComponent } from './_components/navbar/navbar.component';
 import { FooterComponent } from './_components/footer/footer.component';
@@ -22,12 +20,14 @@ import { MapComponent } from './_components/map/map.component';
 import { BottomNavComponent } from './_components/bottom-nav/bottom-nav.component';
 import { ViewHeaderComponent } from './_components/view-header/view-header.component';
 import { GameInfoGridComponent } from './_components/game-info-grid/game-info-grid.component';
+import { SignInComponent } from './_views/sign-in/sign-in.component';
+import { SignUpComponent } from './_views/sign-up/sign-up.component';
+import { GameCreateComponent } from './_components/game-create/game-create.component';
+import { GameEditComponent } from './_components/game-edit/game-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    LoginComponent,
     GameComponent,
     NavbarComponent,
     FooterComponent,
@@ -38,7 +38,11 @@ import { GameInfoGridComponent } from './_components/game-info-grid/game-info-gr
     MapComponent,
     BottomNavComponent,
     ViewHeaderComponent,
-    GameInfoGridComponent
+    GameInfoGridComponent,
+    SignInComponent,
+    SignUpComponent,
+    GameCreateComponent,
+    GameEditComponent
   ],
   imports: [
     BrowserModule,

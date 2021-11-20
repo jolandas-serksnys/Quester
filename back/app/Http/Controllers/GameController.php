@@ -29,6 +29,14 @@ class GameController extends Controller
         return response()->json(Game::with('maps.quests.tasks')->get(), 200);
     }
 
+    public function getOwned()
+    {
+        if($adminCheck = $this->checkAdmin())
+            return $adminCheck;
+
+        return response()->json(Game::with('owner')->withCount('maps')->where('owner_id', auth()->user()->id)->get(), 200);
+    }
+
     public function create(Request $request)
     {
         if($adminCheck = $this->checkAdmin())
@@ -81,7 +89,7 @@ class GameController extends Controller
 
         if($checkOwner = $this->checkOwner($request))
             return $checkOwner;
-        
+
         $game = Game::find($request['game_id']);
         $game->update($validator->validated());
 

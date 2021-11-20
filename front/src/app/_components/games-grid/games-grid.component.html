@@ -1,7 +1,7 @@
 <div class="games-grid">
-    <button class="item" *ngFor="let game of games; index as i" (click)="open(game)">
+    <button class="item" *ngFor="let game of games; index as i" routerLink="/g/{{game.id}}/{{getUrlTitle(game.title)}}" >
         <div class="card border-0 shadow">
-            <!--routerLink="/g/{{game.id}}/{{getUrlTitle(game.title)}}"-->
+            <!--(click)="open(game)"-->
             <div class="image" *ngIf="game.image_url" style="--game-image: url({{game.image_url}})"></div>
             <div class="inner">
                 <div class="part">

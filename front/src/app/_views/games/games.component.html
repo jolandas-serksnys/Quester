@@ -1,11 +1,17 @@
+<app-navbar></app-navbar>
 <div class="app-flex">
-	<div>
-		<app-header [imageUrl]="'https://i.pinimg.com/originals/e7/13/4b/e7134b7c8013e649b6249d1dd1b7b843.jpg'"></app-header>
-		<div class="container">
-			<app-view-header text="Quester"></app-view-header>
-			<app-games-grid [games]="games"></app-games-grid>
-		</div>
-	</div>
-	<app-footer></app-footer>
+    <div>
+        <app-header [imageUrl]="'https://i.pinimg.com/originals/e7/13/4b/e7134b7c8013e649b6249d1dd1b7b843.jpg'"></app-header>
+        <div class="container">
+            <app-view-header [text]="title"></app-view-header>
+            <div class="d-flex gap-2 mb-5" *ngIf="isOwnedView">
+              <button class="btn btn-lg btn-primary" type="button" (click)="createGame()">Add a new Game</button>
+            </div>
+            <app-games-grid [games]="games"></app-games-grid>
+        </div>
+    </div>
+    <app-footer></app-footer>
 </div>
+<!--
 <app-bottom-nav></app-bottom-nav>
+-->
