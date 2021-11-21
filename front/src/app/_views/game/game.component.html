@@ -19,9 +19,9 @@
         </div>
       </div>
       <div class="card border-0 shadow" style="overflow: hidden;">
-        <div class="p-5 pb-2 text-center" *ngIf="loading">
-          <h4>Loading...</h4>
-          <p>Please wait, while we're loading the game data...</p>
+        <div class="p-5 pb-2 d-flex flex-column gap-2 align-items-center" *ngIf="loading">
+          <span class="spinner-border spinner-border"></span>
+          <small>Please wait, while we're loading the game data...</small>
         </div>
         <div class="px-4 py-3 d-flex flex-column gap-3">
           <app-game-info-grid [game]="game"></app-game-info-grid>
