@@ -33,7 +33,7 @@
                     <h6>{{task.title}}</h6>
                     <div>
                         <p class="m-0">{{task.description}}</p>
-                        <button class="btn btn-sm p-0 fw-bold"  [ngClass]="{'text-success': isSelected(task.id), 'text-primary': !isSelected(task.id)}" (click)="toggleCompleted(task.id)">{{isSelected(task.id) ? 'Completed' : 'Mark as completed'}}</button>
+                        <button class="btn btn-sm p-0 fw-bold" [ngClass]="{'text-success': isSelected(task.id), 'text-primary': !isSelected(task.id)}" (click)="toggleCompleted(task.id)" *ngIf="isLoggedIn">{{isSelected(task.id) ? 'Completed' : 'Mark as completed'}}</button>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Map, Quest } from '@app/_models';
-import { MapService } from '@app/_services';
+import { AuthenticationService, MapService } from '@app/_services';
 import { QuestService } from '@app/_services/quest.service';
 
 @Component({
@@ -17,11 +17,15 @@ export class MapComponent implements OnInit {
   selectedQuestIndex: number = 0;
 
   loadingQuestData = false;
+  isLoggedIn = false;
 
   constructor(
     private mapService: MapService,
-    private questService: QuestService
-  ) { }
+    private questService: QuestService,
+    private authenticationService: AuthenticationService
+  ) {
+    this.isLoggedIn = this.authenticationService.currentUserValue !== null;
+   }
 
   ngOnInit(): void {
     this.mapService.getGameMaps(this.gameId).subscribe(r => {
@@ -54,11 +58,12 @@ export class MapComponent implements OnInit {
   }
 
   getComleted() {
-    this.questService.getTasksCompleted(this.maps[this.selectedMapIndex].game_id, this.maps[this.selectedMapIndex].id, this.quests[this.selectedQuestIndex].id).subscribe(res => {
-      this.completedTasks = res;
-    }, err => {
+    if(this.isLoggedIn && this.selectedMapIndex)
+      this.questService.getTasksCompleted(this.maps[this.selectedMapIndex].game_id, this.maps[this.selectedMapIndex].id, this.quests[this.selectedQuestIndex].id).subscribe(res => {
+        this.completedTasks = res;
+      }, err => {
 
-    })
+      })
   }
 
   toggleCompleted(taskId) {
