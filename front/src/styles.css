@@ -246,3 +246,7 @@ p:last-child {
 .tasks-timeline .task:hover:before {
     background: var(--bs-primary);
 }
+
+.quester {
+  font-family: 'Barlow Semi Condensed', sans-serif !important;
+}
