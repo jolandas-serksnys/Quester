@@ -15,4 +15,8 @@ export class MapService {
   getGameMaps(gameId: number) {
     return this.http.get<Map[]>(`${environment.apiUrl}/games/${gameId}/maps`);
   }
+
+  create(gameId, body) {
+    return this.http.post<Map>(`${environment.apiUrl}/games/${gameId}/maps`, body);
+  }
 }

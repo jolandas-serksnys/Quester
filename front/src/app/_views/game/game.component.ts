@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameEditComponent } from '@app/_components/game-edit/game-edit.component';
+import { GameManageComponent } from '@app/_components/game-manage/game-manage.component';
 import { Game, Map, Quest } from '@app/_models';
 import { AuthenticationService, GameService, MapService } from '@app/_services';
 import { QuestService } from '@app/_services/quest.service';
@@ -53,6 +54,15 @@ export class GameComponent implements OnInit {
 
   editGame() {
     const modalRef = this.modalService.open(GameEditComponent, { centered: true, scrollable: true, size: 'lg' });
+    modalRef.componentInstance.game = this.game;
+    modalRef.result.then((result) => {
+      this.loadGameData();
+    }, (reason) => {
+    })
+  }
+
+  manageGame() {
+    const modalRef = this.modalService.open(GameManageComponent, { centered: true, scrollable: true, size: 'lg' });
     modalRef.componentInstance.game = this.game;
     modalRef.result.then((result) => {
       this.loadGameData();

@@ -24,6 +24,7 @@ import { SignInComponent } from './_views/sign-in/sign-in.component';
 import { SignUpComponent } from './_views/sign-up/sign-up.component';
 import { GameCreateComponent } from './_components/game-create/game-create.component';
 import { GameEditComponent } from './_components/game-edit/game-edit.component';
+import { GameManageComponent } from './_components/game-manage/game-manage.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { GameEditComponent } from './_components/game-edit/game-edit.component';
     SignInComponent,
     SignUpComponent,
     GameCreateComponent,
-    GameEditComponent
+    GameEditComponent,
+    GameManageComponent
   ],
   imports: [
     BrowserModule,

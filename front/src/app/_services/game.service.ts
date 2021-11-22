@@ -21,7 +21,7 @@ export class GameService {
   }
 
   create(body) {
-    return this.http.post<{ status: string, message: string, game: Game }>(`${environment.apiUrl}/games`, body);
+    return this.http.post<Game>(`${environment.apiUrl}/games`, body);
   }
 
   get(id) {
@@ -29,10 +29,10 @@ export class GameService {
   }
 
   update(id, body) {
-    return this.http.put<{ status: string, message: string, game: Game }>(`${environment.apiUrl}/games/${id}`, body);
+    return this.http.put<Game>(`${environment.apiUrl}/games/${id}`, body);
   }
 
   delete(id) {
-    return this.http.delete<{ status: string, message: string, game: Game }>(`${environment.apiUrl}/games/${id}`);
+    return this.http.delete<Game>(`${environment.apiUrl}/games/${id}`);
   }
 }
