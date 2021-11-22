@@ -14,12 +14,15 @@ class TaskController extends Controller
 {
     public function getValidationArray() {
         return [
+            'game_id' => 'nullable|numeric',
+            'map_id' => 'nullable|numeric',
+            'quest_id' => 'nullable|numeric',
             'title' => 'string|required|max:255',
             'description' => 'string|max:65535|nullable',
             'image_url' => 'string|max:255|nullable',
         ];
     }
-    
+
     public function getAll()
     {
         return response()->json(Task::all(), 200);
@@ -32,7 +35,7 @@ class TaskController extends Controller
         $request['quest_id'] = $questId;
         if($checkExistsParents = $this->checkExistsParents($request))
             return $checkExistsParents;
-        
+
         return response()->json(Task::where("tasks.quest_id", $questId)->get(), 200);
     }
 
@@ -46,7 +49,7 @@ class TaskController extends Controller
         $request['quest_id'] = $questId;
         if($checkExistsParents = $this->checkExistsParents($request))
             return $checkExistsParents;
-            
+
     	$validator = Validator::make($request->all(), $this->getValidationArray());
 
         if ($validator->fails()) {
@@ -64,7 +67,7 @@ class TaskController extends Controller
         $request['task_id'] = $taskId;
         if($checkExistsConcrete = $this->checkExistsConcrete($request))
             return $checkExistsConcrete;
-        
+
         return response()->json(Task::where('tasks.quest_id', $questId)->find($taskId), 200);
     }
 
@@ -79,7 +82,7 @@ class TaskController extends Controller
         $request['task_id'] = $taskId;
         if($checkExistsConcrete = $this->checkExistsConcrete($request))
             return $checkExistsConcrete;
-        
+
     	$validator = Validator::make($request->all(), $this->getValidationArray());
 
         if ($validator->fails()) {
@@ -112,7 +115,7 @@ class TaskController extends Controller
 
         $task = Task::find($taskId);
         Task::destroy($task->id);
-        
+
         return response()->json($task, 200);
     }
 
@@ -127,7 +130,7 @@ class TaskController extends Controller
         $request['task_id'] = $taskId;
         if($checkExistsConcrete = $this->checkExistsConcrete($request))
             return $checkExistsConcrete;
-        
+
         $userId = auth()->user()->id;
         $toggleVal = false;
 
@@ -142,7 +145,7 @@ class TaskController extends Controller
                 'task_id' => $taskId
             ]);
         }
-        
+
         return response()->json(array(
             'task_id' => $taskId,
             'is_completed' => $toggleVal
@@ -159,10 +162,24 @@ class TaskController extends Controller
         $request['quest_id'] = $questId;
         if($checkExistsParents = $this->checkExistsParents($request))
             return $checkExistsParents;
-        
+
         $taskTrackerEntries = TaskTrackerEntry::where('user_id', auth()->user()->id)->get();
-        
+
         return response()->json($taskTrackerEntries, 200);
+    }
+
+    public function checkExistsParents(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'game_id' => 'numeric|required|exists:games,id',
+            'quest_id' => 'exists:quests,id,map_id,' . $request['map_id'],
+            'map_id' => 'exists:maps,id,game_id,' . $request['game_id']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 404);
+        }
+
+        return false;
     }
 
     public function checkExistsConcrete(Request $request) {

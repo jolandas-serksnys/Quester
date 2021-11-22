@@ -12,6 +12,8 @@ class QuestController extends Controller
 {
     public function getValidationArray() {
         return [
+            'game_id' => 'nullable|numeric',
+            'map_id' => 'nullable|numeric',
             'title' => 'string|required|max:255',
             'description' => 'string|max:65535|nullable',
             'image_url' => 'string|max:255|nullable',
@@ -19,12 +21,12 @@ class QuestController extends Controller
             'map_coord_y' => 'numeric|nullable'
         ];
     }
-    
+
     public function getAll()
     {
         return response()->json(Quest::all(), 200);
     }
-    
+
     public function getAllHierarchy()
     {
         return response()->json(Quest::with("tasks")->get(), 200);
@@ -36,7 +38,7 @@ class QuestController extends Controller
         $request['map_id'] = $mapId;
         if($checkExistsParents = $this->checkExistsParents($request))
             return $checkExistsParents;
-        
+
         return response()->json(Quest::where('map_id', $mapId)->with('tasks')->get(), 200);
     }
 
@@ -69,7 +71,7 @@ class QuestController extends Controller
         $request['quest_id'] = $questId;
         if($checkExistsConcrete = $this->checkExistsConcrete($request))
             return $checkExistsConcrete;
-        
+
         return response()->json(Quest::where("map_id", $mapId)->with("tasks")->find($questId), 200);
     }
 
@@ -98,7 +100,7 @@ class QuestController extends Controller
 
         return response()->json($quest, 200);
     }
-    
+
     public function deleteGameMapQuest(Request $request, $gameId, $mapId, $questId)
     {
         if($adminCheck = $this->checkAdmin())
@@ -115,7 +117,7 @@ class QuestController extends Controller
 
         $quest = Quest::where("map_id", $mapId)->find($questId);
         Quest::destroy($quest->id);
-        
+
         return response()->json($quest, 200);
     }
 

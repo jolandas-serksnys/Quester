@@ -39,10 +39,11 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="onSubmitCreateMap()">Add Map</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitCreateMap()">Add Map</button>
         </div>
       </ng-template>
     </li>
+
     <li [ngbNavItem]="2">
       <a ngbNavLink>Maps List</a>
       <ng-template ngbNavContent>
@@ -51,19 +52,26 @@
             <div class="d-flex justify-content-between align-items-center p-3">
               <div>{{map.title}}</div>
               <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary">Manage Quests</button>
+                <button type="button" class="btn btn-primary" (click)="manageMapQuests(map.id)">Manage Quests</button>
                 <button type="button" class="btn btn-primary" (click)="editMap(map.id)"><i class="bi bi-pencil-square"></i></button>
-                <button type="button" class="btn btn-danger" (click)="deleteMap(map.id)"><i class="bi bi-x-lg"></i></button>
+                <button type="button" class="btn btn-danger" (click)="onSubmitDeleteMap(map.id)"><i class="bi bi-x-lg"></i></button>
               </div>
+            </div>
+          </li>
+          <li class="list-group-item" *ngIf="maps.length == 0">
+            <div class="d-flex justify-content-center align-items-center p-3">
+              <div>No maps have been added. Click the button bellow to add a new map.</div>
             </div>
           </li>
         </ul>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
+          <button type="button" class="btn btn-primary" (click)="createMap()">Add Map</button>
         </div>
       </ng-template>
     </li>
-    <li [ngbNavItem]="3" *ngIf="mapEditId != -1">
+
+    <li [ngbNavItem]="3" *ngIf="showMapEdit">
       <a ngbNavLink>Edit Map</a>
       <ng-template ngbNavContent>
         <div class="modal-body">
@@ -97,8 +105,259 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancelEditMap()">Cancel Edit</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="onSubmitEditMap()">Save Changes</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEditMap()">Cancel Edit</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitEditMap()">Save Changes</button>
+        </div>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="3" *ngIf="showQuestManage">
+      <a ngbNavLink>Quests List</a>
+      <ng-template ngbNavContent>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let quest of quests; index as i">
+            <div class="d-flex justify-content-between align-items-center p-3">
+              <div>{{quest.title}}</div>
+              <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary" (click)="manageMapQuestTasks(quest.id)">Manage Tasks</button>
+                <button type="button" class="btn btn-primary" (click)="editQuest(quest.id)"><i class="bi bi-pencil-square"></i></button>
+                <button type="button" class="btn btn-danger" (click)="onSubmitDeleteMap(quest.id)"><i class="bi bi-x-lg"></i></button>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item" *ngIf="quests.length == 0">
+            <div class="d-flex justify-content-center align-items-center p-3">
+              <div>No quests have been added. Click the button bellow to add a new quest.</div>
+            </div>
+          </li>
+        </ul>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelManageMapQuests()">Close Quests</button>
+          <button type="button" class="btn btn-primary" (click)="createQuest()">Add Quest</button>
+        </div>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="4" *ngIf="showQuestCreate">
+      <a ngbNavLink>New Quest</a>
+      <ng-template ngbNavContent>
+        <div class="modal-body">
+          <form [formGroup]="questCreate" (ngSubmit)="onSubmitCreateQuest()">
+            <div *ngIf="error" class="alert alert-danger mt-0 mb-3">{{error}}</div>
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" formControlName="title" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && qcf.title.errors }" />
+              <div *ngIf="submitted && qcf.title.errors" class="form-text invalid-feedback">
+                <div *ngIf="qcf.title.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea formControlName="description" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && qcf.description.errors }"></textarea>
+              <div *ngIf="submitted && qcf.description.errors" class="form-text invalid-feedback">
+                <div *ngIf="qcf.description.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="image_url" class="form-label">Image URL</label>
+              <input type="text" formControlName="image_url" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && qcf.image_url.errors }" />
+              <div *ngIf="submitted && qcf.image_url.errors" class="form-text invalid-feedback">
+                <div *ngIf="qcf.image_url.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <div class="col-6">
+                <label for="map_coord_x" class="form-label">Map Coord X</label>
+                <input type="number" formControlName="map_coord_x" class="form-control" min="0" max="100"
+                  [ngClass]="{ 'is-invalid': submitted && qcf.map_coord_x.errors }" />
+                <div *ngIf="submitted && qcf.map_coord_x.errors" class="form-text invalid-feedback">
+                  <div *ngIf="qcf.map_coord_x.errors.required">This field is required</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <label for="map_coord_y" class="form-label">Map Coord Y</label>
+                <input type="number" formControlName="map_coord_y" class="form-control" min="0" max="100"
+                  [ngClass]="{ 'is-invalid': submitted && qcf.map_coord_y.errors }" />
+                <div *ngIf="submitted && qcf.map_coord_y.errors" class="form-text invalid-feedback">
+                  <div *ngIf="qcf.map_coord_y.errors.required">This field is required</div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelCreateQuest()">Cancel Create</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitCreateQuest()">Add Quest</button>
+        </div>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="5" *ngIf="showQuestEdit">
+      <a ngbNavLink>Edit Quest</a>
+      <ng-template ngbNavContent>
+        <div class="modal-body">
+          <form [formGroup]="questEdit" (ngSubmit)="onSubmitEditQuest()">
+            <div *ngIf="error" class="alert alert-danger mt-0 mb-3">{{error}}</div>
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" formControlName="title" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && qef.title.errors }" />
+              <div *ngIf="submitted && qef.title.errors" class="form-text invalid-feedback">
+                <div *ngIf="qef.title.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea formControlName="description" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && qef.description.errors }"></textarea>
+              <div *ngIf="submitted && qef.description.errors" class="form-text invalid-feedback">
+                <div *ngIf="qef.description.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="image_url" class="form-label">Image URL</label>
+              <input type="text" formControlName="image_url" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && qef.image_url.errors }" />
+              <div *ngIf="submitted && qef.image_url.errors" class="form-text invalid-feedback">
+                <div *ngIf="qef.image_url.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <div class="col-6">
+                <label for="map_coord_x" class="form-label">Map Coord X</label>
+                <input type="number" formControlName="map_coord_x" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && qef.map_coord_x.errors }" min="0" max="100" />
+                <div *ngIf="submitted && qef.map_coord_x.errors" class="form-text invalid-feedback">
+                  <div *ngIf="qef.map_coord_x.errors.required">This field is required</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <label for="map_coord_y" class="form-label">Map Coord Y</label>
+                <input type="number" formControlName="map_coord_y" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && qef.map_coord_y.errors }" min="0" max="100" />
+                <div *ngIf="submitted && qef.map_coord_y.errors" class="form-text invalid-feedback">
+                  <div *ngIf="qef.map_coord_y.errors.required">This field is required</div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEditQuest()">Cancel Edit</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitEditQuest()">Save Changes</button>
+        </div>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="6" *ngIf="showTaskManage">
+      <a ngbNavLink>Tasks List</a>
+      <ng-template ngbNavContent>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let task of tasks; index as i">
+            <div class="d-flex justify-content-between align-items-center p-3">
+              <div>{{task.title}}</div>
+              <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary" (click)="editTask(task.id)"><i class="bi bi-pencil-square"></i></button>
+                <button type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></button>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item" *ngIf="tasks.length == 0">
+            <div class="d-flex justify-content-center align-items-center p-3">
+              <div>No tasks have been added. Click the button bellow to add a new task.</div>
+            </div>
+          </li>
+        </ul>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelManageMapQuestTasks()">Close Tasks</button>
+          <button type="button" class="btn btn-primary" (click)="createTask()">Add Task</button>
+        </div>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="7" *ngIf="showTaskCreate">
+      <a ngbNavLink>New Task</a>
+      <ng-template ngbNavContent>
+        <div class="modal-body">
+          <form [formGroup]="taskCreate" (ngSubmit)="onSubmitCreateTask()">
+            <div *ngIf="error" class="alert alert-danger mt-0 mb-3">{{error}}</div>
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" formControlName="title" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && tcf.title.errors }" />
+              <div *ngIf="submitted && tcf.title.errors" class="form-text invalid-feedback">
+                <div *ngIf="tcf.title.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea formControlName="description" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && tcf.description.errors }"></textarea>
+              <div *ngIf="submitted && tcf.description.errors" class="form-text invalid-feedback">
+                <div *ngIf="tcf.description.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="image_url" class="form-label">Image URL</label>
+              <input type="text" formControlName="image_url" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && tcf.image_url.errors }" />
+              <div *ngIf="submitted && tcf.image_url.errors" class="form-text invalid-feedback">
+                <div *ngIf="tcf.image_url.errors.required">This field is required</div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelCreateTask()">Cancel Create</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitCreateTask()">Add Task</button>
+        </div>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="8" *ngIf="showTaskEdit">
+      <a ngbNavLink>Edit Task</a>
+      <ng-template ngbNavContent>
+        <div class="modal-body">
+          <form [formGroup]="taskEdit" (ngSubmit)="onSubmitEditTask()">
+            <div *ngIf="error" class="alert alert-danger mt-0 mb-3">{{error}}</div>
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" formControlName="title" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && tef.title.errors }" />
+              <div *ngIf="submitted && tef.title.errors" class="form-text invalid-feedback">
+                <div *ngIf="tef.title.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea formControlName="description" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && tef.description.errors }"></textarea>
+              <div *ngIf="submitted && tef.description.errors" class="form-text invalid-feedback">
+                <div *ngIf="tef.description.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="image_url" class="form-label">Image URL</label>
+              <input type="text" formControlName="image_url" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && tef.image_url.errors }" />
+              <div *ngIf="submitted && tef.image_url.errors" class="form-text invalid-feedback">
+                <div *ngIf="tef.image_url.errors.required">This field is required</div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEditTask()">Cancel Edit</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmitEditTask()">Save Changes</button>
         </div>
       </ng-template>
     </li>
