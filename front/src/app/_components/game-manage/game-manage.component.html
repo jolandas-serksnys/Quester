@@ -4,35 +4,35 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
       (click)="activeModal.dismiss('Cross click')"></button>
   </div>
-  <ul ngbNav #nav="ngbNav" class="nav-tabs px-3" [activeId]="1">
+  <ul ngbNav #nav="ngbNav" class="nav-tabs px-3" [activeId]="2">
     <li [ngbNavItem]="1">
       <a ngbNavLink>New Map</a>
       <ng-template ngbNavContent>
         <div class="modal-body">
-          <form [formGroup]="mapForm" (ngSubmit)="onSubmitCreateMap()">
+          <form [formGroup]="mapCreate" (ngSubmit)="onSubmitCreateMap()">
             <div *ngIf="error" class="alert alert-danger mt-0 mb-3">{{error}}</div>
             <div class="mb-3">
               <label for="title" class="form-label">Title</label>
               <input type="text" formControlName="title" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && mf.title.errors }" />
-              <div *ngIf="submitted && mf.title.errors" class="form-text invalid-feedback">
-                <div *ngIf="mf.title.errors.required">This field is required</div>
+                [ngClass]="{ 'is-invalid': submitted && mcf.title.errors }" />
+              <div *ngIf="submitted && mcf.title.errors" class="form-text invalid-feedback">
+                <div *ngIf="mcf.title.errors.required">This field is required</div>
               </div>
             </div>
             <div class="mb-3">
               <label for="description" class="form-label">Description</label>
               <textarea formControlName="description" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && mf.description.errors }"></textarea>
-              <div *ngIf="submitted && mf.description.errors" class="form-text invalid-feedback">
-                <div *ngIf="mf.description.errors.required">This field is required</div>
+                [ngClass]="{ 'is-invalid': submitted && mcf.description.errors }"></textarea>
+              <div *ngIf="submitted && mcf.description.errors" class="form-text invalid-feedback">
+                <div *ngIf="mcf.description.errors.required">This field is required</div>
               </div>
             </div>
             <div class="mb-3">
               <label for="image_url" class="form-label">Image URL</label>
               <input type="text" formControlName="image_url" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && mf.image_url.errors }" />
-              <div *ngIf="submitted && mf.image_url.errors" class="form-text invalid-feedback">
-                <div *ngIf="mf.image_url.errors.required">This field is required</div>
+                [ngClass]="{ 'is-invalid': submitted && mcf.image_url.errors }" />
+              <div *ngIf="submitted && mcf.image_url.errors" class="form-text invalid-feedback">
+                <div *ngIf="mcf.image_url.errors.required">This field is required</div>
               </div>
             </div>
           </form>
@@ -48,7 +48,14 @@
       <ng-template ngbNavContent>
         <ul class="list-group list-group-flush">
           <li class="list-group-item" *ngFor="let map of maps; index as i">
-            {{map.title}}
+            <div class="d-flex justify-content-between align-items-center p-3">
+              <div>{{map.title}}</div>
+              <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary">Manage Quests</button>
+                <button type="button" class="btn btn-primary" (click)="editMap(map.id)"><i class="bi bi-pencil-square"></i></button>
+                <button type="button" class="btn btn-danger" (click)="deleteMap(map.id)"><i class="bi bi-x-lg"></i></button>
+              </div>
+            </div>
           </li>
         </ul>
         <div class="modal-footer">
@@ -56,14 +63,45 @@
         </div>
       </ng-template>
     </li>
-    <li [ngbNavItem]="3">
-      <a ngbNavLink>Second</a>
+    <li [ngbNavItem]="3" *ngIf="mapEditId != -1">
+      <a ngbNavLink>Edit Map</a>
       <ng-template ngbNavContent>
         <div class="modal-body">
-          Second content
+          <form [formGroup]="mapEdit" (ngSubmit)="onSubmitEditMap()">
+            <div *ngIf="error" class="alert alert-danger mt-0 mb-3">{{error}}</div>
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" formControlName="title" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && mef.title.errors }" />
+              <div *ngIf="submitted && mef.title.errors" class="form-text invalid-feedback">
+                <div *ngIf="mef.title.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea formControlName="description" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && mef.description.errors }"></textarea>
+              <div *ngIf="submitted && mef.description.errors" class="form-text invalid-feedback">
+                <div *ngIf="mef.description.errors.required">This field is required</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="image_url" class="form-label">Image URL</label>
+              <input type="text" formControlName="image_url" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && mef.image_url.errors }" />
+              <div *ngIf="submitted && mef.image_url.errors" class="form-text invalid-feedback">
+                <div *ngIf="mef.image_url.errors.required">This field is required</div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="activeModal.dismiss('Cross click')">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancelEditMap()">Cancel Edit</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="onSubmitEditMap()">Save Changes</button>
         </div>
       </ng-template>
     </li>
   </ul>
-  <div [ngbNavOutlet]="nav"></div>
+  <div [ngbNavOutlet]="nav" class="modal-body p-0"></div>
 </div>

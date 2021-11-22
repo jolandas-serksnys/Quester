@@ -25,6 +25,7 @@ import { SignUpComponent } from './_views/sign-up/sign-up.component';
 import { GameCreateComponent } from './_components/game-create/game-create.component';
 import { GameEditComponent } from './_components/game-edit/game-edit.component';
 import { GameManageComponent } from './_components/game-manage/game-manage.component';
+import { ToastComponent } from './_components/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { GameManageComponent } from './_components/game-manage/game-manage.compo
     SignUpComponent,
     GameCreateComponent,
     GameEditComponent,
-    GameManageComponent
+    GameManageComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ class MapController extends Controller
 {
     public function getValidationArray() {
         return [
+            'game_id' => 'nullable|numeric',
             'title' => 'string|required|max:255',
             'description' => 'string|max:65535|nullable',
             'image_url' => 'string|max:255|nullable'
@@ -22,7 +23,7 @@ class MapController extends Controller
     {
         return response()->json(Map::all(), 200);
     }
-    
+
     public function getAllHierarchy()
     {
         return response()->json(Map::with("quests.tasks")->get(), 200);
@@ -41,8 +42,8 @@ class MapController extends Controller
     {
         if($adminCheck = $this->checkAdmin())
             return $adminCheck;
-            
-        $request['game_id'] = $gameId;
+
+        $request->request->add(['game_id' => $gameId]);
         if($checkExistsParents = $this->checkExistsParents($request))
             return $checkExistsParents;
 
@@ -57,7 +58,7 @@ class MapController extends Controller
 
         return response()->json(Map::create($validator->validated()), 201); // Created
     }
-    
+
     public function getGameMap(Request $request, $gameId, $mapId)
     {
         $request['game_id'] = $gameId;
@@ -67,7 +68,7 @@ class MapController extends Controller
 
         return response()->json(Map::where('maps.game_id', $gameId)->find($mapId), 200);
     }
-    
+
     public function updateGameMap(Request $request, $gameId, $mapId)
     {
         if($adminCheck = $this->checkAdmin())
@@ -89,10 +90,10 @@ class MapController extends Controller
 
         $map = Map::where('maps.game_id', $gameId)->find($mapId);
         $map->update($validator->validated());
-        
+
         return response()->json($map, 200);
     }
-    
+
     public function deleteGameMap(Request $request, $gameId, $mapId)
     {
         if($adminCheck = $this->checkAdmin())
@@ -108,7 +109,7 @@ class MapController extends Controller
 
         $map = Map::where('maps.game_id', $gameId)->find($mapId);
         Map::destroy($map->id);
-        
+
         return response()->json($map, 200);
     }
 
@@ -135,7 +136,7 @@ class MapController extends Controller
 
         return false;
     }
-    
+
     public function checkAdmin() {
         $user = auth()->user();
 
