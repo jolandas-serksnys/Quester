@@ -121,7 +121,7 @@
               <div class="btn-group btn-group-sm" role="group">
                 <button type="button" class="btn btn-primary" (click)="manageMapQuestTasks(quest.id)">Manage Tasks</button>
                 <button type="button" class="btn btn-primary" (click)="editQuest(quest.id)"><i class="bi bi-pencil-square"></i></button>
-                <button type="button" class="btn btn-danger" (click)="onSubmitDeleteMap(quest.id)"><i class="bi bi-x-lg"></i></button>
+                <button type="button" class="btn btn-danger" (click)="onSubmitDeleteQuest(quest.id)"><i class="bi bi-x-lg"></i></button>
               </div>
             </div>
           </li>
@@ -264,7 +264,7 @@
               <div>{{task.title}}</div>
               <div class="btn-group btn-group-sm" role="group">
                 <button type="button" class="btn btn-primary" (click)="editTask(task.id)"><i class="bi bi-pencil-square"></i></button>
-                <button type="button" class="btn btn-danger"><i class="bi bi-x-lg"></i></button>
+                <button type="button" class="btn btn-danger" (click)="onSubmitDeleteTask(task.id)"><i class="bi bi-x-lg"></i></button>
               </div>
             </div>
           </li>

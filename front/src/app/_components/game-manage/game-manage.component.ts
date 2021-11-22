@@ -127,6 +127,11 @@ export class GameManageComponent implements OnInit {
     this.selectedMapId = mapId;
 
     this.showQuestManage = true;
+    this.showTaskCreate = false;
+    this.showQuestEdit = false;
+    this.showTaskManage = false;
+    this.showTaskCreate = false;
+    this.showTaskEdit = false;
     this.loadQuests();
     this.nav.select(3);
   }
@@ -136,12 +141,19 @@ export class GameManageComponent implements OnInit {
 
     this.nav.select(2);
     this.showQuestManage = false;
+    this.showTaskCreate = false;
+    this.showQuestEdit = false;
+    this.showTaskManage = false;
+    this.showTaskCreate = false;
+    this.showTaskEdit = false;
   }
 
   manageMapQuestTasks(questId) {
     this.selectedQuestId = questId;
 
     this.showTaskManage = true;
+    this.showTaskCreate = false;
+    this.showTaskEdit = false;
     this.loadTasks();
     this.nav.select(6);
   }
@@ -151,6 +163,8 @@ export class GameManageComponent implements OnInit {
 
     this.nav.select(3);
     this.showTaskManage = false;
+    this.showTaskCreate = false;
+    this.showTaskEdit = false;
   }
 
   editMap(mapId) {
@@ -347,6 +361,13 @@ export class GameManageComponent implements OnInit {
           });
         }
       );
+
+      this.showQuestManage = false;
+      this.showQuestEdit = false;
+      this.showQuestCreate = false;
+      this.showTaskManage = false;
+      this.showTaskCreate = false;
+      this.showTaskEdit = false;
   }
 
   onSubmitCreateQuest() {
@@ -417,6 +438,35 @@ export class GameManageComponent implements OnInit {
           this.submitted = false;
         }
       );
+  }
+
+  onSubmitDeleteQuest(questId) {
+    this.questsService.delete(this.game.id, this.selectedMapId, questId)
+      .subscribe(
+        res => {
+          this.loadMaps();
+          this.toastService.show('The quesk has been deleted successfully', {
+            classname: 'bg-success text-light',
+            delay: 2000 ,
+            autohide: true
+          });
+
+          this.loadQuests();
+        },
+        err => {
+          this.toastService.show('An error has occured when trying to delete the quesk', {
+            classname: 'bg-danger text-light',
+            delay: 2000 ,
+            autohide: true
+          });
+        }
+      );
+
+      this.showQuestEdit = false;
+      this.showQuestCreate = false;
+      this.showTaskManage = false;
+      this.showTaskCreate = false;
+      this.showTaskEdit = false;
   }
 
   onSubmitCreateTask() {
@@ -490,6 +540,32 @@ export class GameManageComponent implements OnInit {
           this.submitted = false;
         }
       );
+  }
+
+  onSubmitDeleteTask(taskId) {
+    this.questsService.deleteTask(this.game.id, this.selectedMapId, this.selectedQuestId, taskId)
+      .subscribe(
+        res => {
+          this.loadMaps();
+          this.toastService.show('The task has been deleted successfully', {
+            classname: 'bg-success text-light',
+            delay: 2000 ,
+            autohide: true
+          });
+
+          this.tasks = this.tasks.filter(t => t.id != taskId);
+        },
+        err => {
+          this.toastService.show('An error has occured when trying to delete the task', {
+            classname: 'bg-danger text-light',
+            delay: 2000 ,
+            autohide: true
+          });
+        }
+      );
+
+      this.showTaskCreate = false;
+      this.showTaskEdit = false;
   }
 
 }

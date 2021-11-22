@@ -24,6 +24,10 @@ export class QuestService {
     return this.http.put<Quest[]>(`${environment.apiUrl}/games/${gameId}/maps/${mapId}/quests/${questId}`, body);
   }
 
+  delete(gameId, mapId, questId) {
+    return this.http.delete<Quest>(`${environment.apiUrl}/games/${gameId}/maps/${mapId}/quests/${questId}`);
+  }
+
   // TASKS
 
   createTask(gameId, mapId, questId, body) {
@@ -32,5 +36,9 @@ export class QuestService {
 
   editTask(gameId, mapId, questId, taskId, body) {
     return this.http.put<Task>(`${environment.apiUrl}/games/${gameId}/maps/${mapId}/quests/${questId}/tasks/${taskId}`, body);
+  }
+
+  deleteTask(gameId, mapId, questId, taskId) {
+    return this.http.delete<Task>(`${environment.apiUrl}/games/${gameId}/maps/${mapId}/quests/${questId}/tasks/${taskId}`);
   }
 }
