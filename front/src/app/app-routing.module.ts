@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminGuard, AuthGuard } from './_helpers';
+import { AccountComponent } from './_views/account/account.component';
 import { GameComponent } from './_views/game/game.component';
 import { GamesComponent } from './_views/games/games.component';
 import { SignInComponent } from './_views/sign-in/sign-in.component';
@@ -15,6 +16,8 @@ const routes: Routes = [
 
   { path: 'g/:gameId', component: GameComponent },
   { path: 'g/:gameId/:gameTitle', component: GameComponent },
+
+  { path: 'account', component: AccountComponent },
 
   // otherwise redirect to home
   { path: '**', redirectTo: 'games' }

@@ -44,6 +44,18 @@ export class AuthenticationService {
             }));
     }
 
+    update(body) {
+      return this.http.post<any>(`${environment.apiUrl}/auth/update`, body)
+      .pipe(map(data => {
+        let user: User = JSON.parse(localStorage.getItem('user'));
+        user.name = data.name;
+        user.updated_at = data.updated_at;
+
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+      }));
+    }
+
     logout() {
         this.http.post<any>(`${environment.apiUrl}/auth/logout`, {}).subscribe();
         localStorage.removeItem('user');

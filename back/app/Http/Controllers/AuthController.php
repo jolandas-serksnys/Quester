@@ -91,6 +91,30 @@ class AuthController extends Controller
     }
 
     /**
+     * Update.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request){
+    	$validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:4',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $updatedInfo = $validator->validated();
+
+        $thisUser = auth()->user();
+        $user = User::find($thisUser->id);
+        $user->name = $updatedInfo['name'];
+        $user->save();
+
+        return response()->json($user, 200);
+    }
+
+    /**
      * Get the authenticated User.
      *
      * @return \Illuminate\Http\JsonResponse
