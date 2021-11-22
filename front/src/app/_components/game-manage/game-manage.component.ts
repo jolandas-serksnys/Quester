@@ -229,6 +229,7 @@ export class GameManageComponent implements OnInit {
   }
 
   cancelEditQuest() {
+    this.taskEdit.reset();
     this.selectedQuestId = -1;
 
     this.nav.select(3);
@@ -241,6 +242,7 @@ export class GameManageComponent implements OnInit {
   }
 
   cancelCreateTask() {
+    this.taskCreate.reset();
     this.nav.select(6);
     this.showTaskCreate = false;
   }

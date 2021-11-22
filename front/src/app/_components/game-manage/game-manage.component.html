@@ -52,9 +52,9 @@
             <div class="d-flex justify-content-between align-items-center p-3">
               <div>{{map.title}}</div>
               <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary" (click)="manageMapQuests(map.id)">Manage Quests</button>
-                <button type="button" class="btn btn-primary" (click)="editMap(map.id)"><i class="bi bi-pencil-square"></i></button>
-                <button type="button" class="btn btn-danger" (click)="onSubmitDeleteMap(map.id)"><i class="bi bi-x-lg"></i></button>
+                <button type="button" class="btn btn-outline-primary" (click)="manageMapQuests(map.id)">Manage Quests</button>
+                <button type="button" class="btn btn-outline-primary" (click)="editMap(map.id)"><i class="bi bi-pencil-square"></i></button>
+                <button type="button" class="btn btn-outline-danger" (click)="onSubmitDeleteMap(map.id)"><i class="bi bi-x-lg"></i></button>
               </div>
             </div>
           </li>
@@ -119,9 +119,9 @@
             <div class="d-flex justify-content-between align-items-center p-3">
               <div>{{quest.title}}</div>
               <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary" (click)="manageMapQuestTasks(quest.id)">Manage Tasks</button>
-                <button type="button" class="btn btn-primary" (click)="editQuest(quest.id)"><i class="bi bi-pencil-square"></i></button>
-                <button type="button" class="btn btn-danger" (click)="onSubmitDeleteQuest(quest.id)"><i class="bi bi-x-lg"></i></button>
+                <button type="button" class="btn btn-outline-primary" (click)="manageMapQuestTasks(quest.id)">Manage Tasks</button>
+                <button type="button" class="btn btn-outline-primary" (click)="editQuest(quest.id)"><i class="bi bi-pencil-square"></i></button>
+                <button type="button" class="btn btn-outline-danger" (click)="onSubmitDeleteQuest(quest.id)"><i class="bi bi-x-lg"></i></button>
               </div>
             </div>
           </li>
@@ -263,8 +263,8 @@
             <div class="d-flex justify-content-between align-items-center p-3">
               <div>{{task.title}}</div>
               <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary" (click)="editTask(task.id)"><i class="bi bi-pencil-square"></i></button>
-                <button type="button" class="btn btn-danger" (click)="onSubmitDeleteTask(task.id)"><i class="bi bi-x-lg"></i></button>
+                <button type="button" class="btn btn-outline-primary" (click)="editTask(task.id)"><i class="bi bi-pencil-square"></i></button>
+                <button type="button" class="btn btn-outline-danger" (click)="onSubmitDeleteTask(task.id)"><i class="bi bi-x-lg"></i></button>
               </div>
             </div>
           </li>
