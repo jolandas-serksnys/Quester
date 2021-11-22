@@ -41,4 +41,12 @@ export class QuestService {
   deleteTask(gameId, mapId, questId, taskId) {
     return this.http.delete<Task>(`${environment.apiUrl}/games/${gameId}/maps/${mapId}/quests/${questId}/tasks/${taskId}`);
   }
+
+  getTasksCompleted(gameId, mapId, questId) {
+    return this.http.get<{user_id: number, task_id: number}[]>(`${environment.apiUrl}/games/${gameId}/maps/${mapId}/quests/${questId}/tasks/completed`);
+  }
+
+  toggleCompleted(gameId, mapId, questId, taskId) {
+    return this.http.post<Task>(`${environment.apiUrl}/games/${gameId}/maps/${mapId}/quests/${questId}/tasks/${taskId}/toggle`, {});
+  }
 }

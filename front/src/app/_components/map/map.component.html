@@ -29,11 +29,11 @@
             <h6>Quests</h6>
             <h3>{{quests[selectedQuestIndex].title}}</h3>
             <div class="tasks-timeline">
-                <div class="task" *ngFor="let task of quests[selectedQuestIndex].tasks">
+                <div class="task" *ngFor="let task of quests[selectedQuestIndex].tasks" [ngClass]="{'completed': isSelected(task.id)}">
                     <h6>{{task.title}}</h6>
                     <div>
                         <p class="m-0">{{task.description}}</p>
-                        <button class="btn btn-sm text-primary p-0 fw-bold">Mark as completed</button>
+                        <button class="btn btn-sm p-0 fw-bold"  [ngClass]="{'text-success': isSelected(task.id), 'text-primary': !isSelected(task.id)}" (click)="toggleCompleted(task.id)">{{isSelected(task.id) ? 'Completed' : 'Mark as completed'}}</button>
                     </div>
                 </div>
             </div>

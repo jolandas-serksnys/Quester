@@ -58,12 +58,12 @@ Route::group([
     Route::put('/{gameId}/maps/{mapId}/quests/{questId}', [QuestController::class, 'updateGameMapQuest']);
     Route::delete('/{gameId}/maps/{mapId}/quests/{questId}', [QuestController::class, 'deleteGameMapQuest']);
 
+    Route::get('/{gameId}/maps/{mapId}/quests/{questId}/tasks/completed', [TaskController::class, 'getTasksCompleted']);
+    Route::post('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}/toggle', [TaskController::class, 'toggleTaskCompleted']);
+
     Route::get('/{gameId}/maps/{mapId}/quests/{questId}/tasks', [TaskController::class, 'getGameMapQuestTasks']);
     Route::post('/{gameId}/maps/{mapId}/quests/{questId}/tasks', [TaskController::class, 'createGameMapQuestTask']);
     Route::get('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'getGameMapQuestTask']);
     Route::put('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'updateGameMapQuestTask']);
     Route::delete('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}', [TaskController::class, 'deleteGameMapQuestTask']);
-
-    Route::get('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}/completed', [TaskController::class, 'getTasksCompleted']);
-    Route::post('/{gameId}/maps/{mapId}/quests/{questId}/tasks/{taskId}/toggle', [TaskController::class, 'toggleTaskCompleted']);
 });

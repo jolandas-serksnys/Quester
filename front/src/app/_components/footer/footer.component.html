@@ -3,15 +3,15 @@
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex gap-1 gap-md-5">
           <div class="d-flex flex-column justify-content-center">
-            <a href="#" class="nav-link link-secondary">All Games</a>
-            <a href="#" class="nav-link link-secondary">Create an Account</a>
+            <a href="#" class="nav-link link-secondary" [routerLink]="['/games']">All Games</a>
+            <a href="#" class="nav-link link-secondary" [routerLink]="['/sign-up']">Create an Account</a>
           </div>
           <div class="d-flex flex-column justify-content-center">
-            <a href="#" class="nav-link link-secondary">Your Games</a>
-            <a href="#" class="nav-link link-secondary">Add a Game</a>
+            <a href="#" class="nav-link link-secondary" [routerLink]="['/games/owned']">Your Games</a>
+            <a href="#" class="nav-link link-secondary" [routerLink]="['/games/owned']">Add a Game</a>
           </div>
           <div class="d-flex flex-column justify-content-center">
-            <a href="#" class="nav-link link-secondary">Your Account</a>
+            <a href="#" class="nav-link link-secondary" [routerLink]="['/account']">Your Account</a>
             <a href="#" class="nav-link link-secondary">Get in Touch</a>
           </div>
         </div>

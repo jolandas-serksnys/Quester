@@ -123,13 +123,14 @@ class TaskController extends Controller
     {
         if($userCheck = $this->checkUser())
             return $userCheck;
+/*
+        $request->request->add(['game_id' => $gameId]);
+        $request->request->add(['map_id' => $mapId]);
+        $request->request->add(['quest_id' => $questId]);
+        $request->request->add(['task_id' => $taskId]);
 
-        $request['game_id'] = $gameId;
-        $request['map_id'] = $mapId;
-        $request['quest_id'] = $questId;
-        $request['task_id'] = $taskId;
         if($checkExistsConcrete = $this->checkExistsConcrete($request))
-            return $checkExistsConcrete;
+            return $checkExistsConcrete;*/
 
         $userId = auth()->user()->id;
         $toggleVal = false;
@@ -163,7 +164,7 @@ class TaskController extends Controller
         if($checkExistsParents = $this->checkExistsParents($request))
             return $checkExistsParents;
 
-        $taskTrackerEntries = TaskTrackerEntry::where('user_id', auth()->user()->id)->get();
+        $taskTrackerEntries = TaskTrackerEntry::where('user_id', auth()->user()->id)->select('user_id', 'task_id')->get();
 
         return response()->json($taskTrackerEntries, 200);
     }

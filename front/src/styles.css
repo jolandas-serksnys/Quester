@@ -247,6 +247,10 @@ p:last-child {
     background: var(--bs-primary);
 }
 
+.tasks-timeline .task.completed:before {
+    background: var(--bs-success);
+}
+
 .quester {
   font-family: 'Barlow Semi Condensed', sans-serif !important;
 }

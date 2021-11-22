@@ -12,6 +12,7 @@ export class MapComponent implements OnInit {
 
   maps: Map[] = [];
   quests: Quest[] = [];
+  completedTasks: {user_id: number, task_id: number}[] = [];
   selectedMapIndex: number = 0;
   selectedQuestIndex: number = 0;
 
@@ -28,7 +29,7 @@ export class MapComponent implements OnInit {
       this.selectMap(this.selectedMapIndex);
     }, e => {
 
-    })
+    });
   }
 
   selectMap(i) {
@@ -36,10 +37,11 @@ export class MapComponent implements OnInit {
       return;
 
     this.selectedMapIndex = i;
-    
+
     this.quests = [];
     this.questService.getGameMapQuests(this.maps[this.selectedMapIndex].game_id, this.maps[this.selectedMapIndex].id).subscribe(r => {
       this.quests = r;
+      this.getComleted();
     })
   }
 
@@ -47,7 +49,27 @@ export class MapComponent implements OnInit {
     if(!this.quests[i] && i != -1)
       return;
 
+    this.getComleted();
     this.selectedQuestIndex = i;
   }
 
+  getComleted() {
+    this.questService.getTasksCompleted(this.maps[this.selectedMapIndex].game_id, this.maps[this.selectedMapIndex].id, this.quests[this.selectedQuestIndex].id).subscribe(res => {
+      this.completedTasks = res;
+    }, err => {
+
+    })
+  }
+
+  toggleCompleted(taskId) {
+    this.questService.toggleCompleted(this.maps[this.selectedMapIndex].game_id, this.maps[this.selectedMapIndex], this.quests[this.selectedQuestIndex], taskId).subscribe(res => {
+      this.getComleted();
+    }, err => {
+
+    })
+  }
+
+  isSelected(id) {
+    return this.completedTasks.some(t => t.task_id == id);
+  }
 }
