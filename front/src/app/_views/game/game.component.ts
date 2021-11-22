@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GameDeleteComponent } from '@app/_components/game-delete/game-delete.component';
 import { GameEditComponent } from '@app/_components/game-edit/game-edit.component';
 import { GameManageComponent } from '@app/_components/game-manage/game-manage.component';
 import { Game, Map, Quest } from '@app/_models';
@@ -66,6 +67,15 @@ export class GameComponent implements OnInit {
     modalRef.componentInstance.game = this.game;
     modalRef.result.then((result) => {
       this.loadGameData();
+    }, (reason) => {
+    })
+  }
+
+  deleteGame() {
+    const modalRef = this.modalService.open(GameDeleteComponent, { centered: true, scrollable: true });
+    modalRef.componentInstance.game = this.game;
+    modalRef.result.then((result) => {
+      this.router.navigate(['/']);
     }, (reason) => {
     })
   }

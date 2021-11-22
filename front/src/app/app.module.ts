@@ -27,6 +27,7 @@ import { GameEditComponent } from './_components/game-edit/game-edit.component';
 import { GameManageComponent } from './_components/game-manage/game-manage.component';
 import { ToastComponent } from './_components/toast/toast.component';
 import { AccountComponent } from './_views/account/account.component';
+import { GameDeleteComponent } from './_components/game-delete/game-delete.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AccountComponent } from './_views/account/account.component';
     GameEditComponent,
     GameManageComponent,
     ToastComponent,
-    AccountComponent
+    AccountComponent,
+    GameDeleteComponent
   ],
   imports: [
     BrowserModule,
