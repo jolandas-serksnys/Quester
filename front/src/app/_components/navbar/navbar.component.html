@@ -28,7 +28,7 @@
         <ul class="navbar-nav" *ngIf="user">
           <li class="nav-item dropdown">
             <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              {{user.name}}
+              {{ (userObservable | async).name }}
             </button>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="navbarDropdown"
               style="min-width: 16rem;">

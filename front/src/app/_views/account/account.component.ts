@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@app/_models';
 import { AuthenticationService, ToastService } from '@app/_services';
+import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -11,6 +12,7 @@ import { first } from 'rxjs/operators';
 })
 export class AccountComponent implements OnInit {
   user: User = new User();
+  userObservable: Observable<User>;
   accountForm: FormGroup;
   loading = false;
   submitted = false;
@@ -24,6 +26,7 @@ export class AccountComponent implements OnInit {
     private authenticationService: AuthenticationService
   ) {
     this.user = authenticationService.currentUserValue;
+    this.userObservable = authenticationService.currentUser;
   }
 
   ngOnInit(): void {
@@ -48,7 +51,7 @@ export class AccountComponent implements OnInit {
     .pipe(first())
     .subscribe({
       next: () => {
-        this.toastService.show('Your account has been updated successfully. You must refresh the page to see the changes.', {
+        this.toastService.show('Your account has been updated successfully', {
           classname: 'bg-success text-light',
           delay: 2000 ,
           autohide: true
