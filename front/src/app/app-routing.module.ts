@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'g/:gameId', component: GameComponent },
   { path: 'g/:gameId/:gameTitle', component: GameComponent },
 
-  { path: 'account', component: AccountComponent },
+  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
 
   // otherwise redirect to home
   { path: '**', redirectTo: 'games' }
