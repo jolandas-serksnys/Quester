@@ -52,7 +52,8 @@ export class SignInComponent implements OnInit {
           this.router.navigate([returnUrl]);
         },
         error: error => {
-          this.error = error;
+          //this.error = error;
+          this.error = 'An error has occured. Please check your email and password and try again.';
           this.loading = false;
         }
       });
