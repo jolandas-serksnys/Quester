@@ -154,6 +154,7 @@ p:last-child {
     transform: scale(.9);
 }
 
+.hex-container.active .hex,
 .hex-container:hover .hex {
     background: var(--bs-primary);
     opacity: 1;

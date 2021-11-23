@@ -13,7 +13,7 @@
             </div>
             <div class="map-container" *ngIf="maps[selectedMapIndex]">
                 <div class="quests-container">
-                    <div class="hex-container" *ngFor="let quest of quests; index as j" style="--pos-x: {{quest.map_coord_x}}; --pos-y: {{quest.map_coord_y}}" (click)="selectQuest(j)">
+                    <div class="hex-container" [ngClass]="{'active': selectedQuestIndex == j}" *ngFor="let quest of quests; index as j" style="--pos-x: {{quest.map_coord_x}}; --pos-y: {{quest.map_coord_y}}" (click)="selectQuest(j)">
                         <div class="hex"></div>
                         <div class="inner">
                             <h1 class="text-light"><i class="bi bi-exclamation"></i></h1>
