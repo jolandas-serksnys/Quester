@@ -1,6 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Footer from './components/footer/footer.component';
 import Navbar from './components/navbar/navbar.component';
 import { UserContext } from './contexts/user.context';
@@ -10,8 +9,6 @@ import HomePage from './pages/home/home.page';
 import LoginPage from './pages/login/login.page';
 import ProfilePage from './pages/profile/profile.page';
 import { login, logout } from './services/auth.service';
-
-const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   const [user, setUser] = useState({} as User);
@@ -33,21 +30,17 @@ const App: React.FC = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <UserContext.Provider value={{isAuthenticated: user.access_token != null, user, handleLogin, handleLogout}}>
-        <BrowserRouter>
-          <Navbar/>
-          <Routes>
-            <Route path="/" element={<HomePage/>}/>
-            <Route path="/g/:gameId" element={<GamePage/>}/>
+    <UserContext.Provider value={{isAuthenticated: user.access_token != null, user, handleLogin, handleLogout}}>
+      <Navbar/>
+      <Routes>
+        <Route path="/" element={<HomePage/>}/>
+        <Route path="/g/:gameId" element={<GamePage/>}/>
 
-            <Route path="/login" element={<LoginPage/>}/>
-            <Route path="/profile" element={<ProfilePage/>}/>
-          </Routes>
-          <Footer></Footer>
-        </BrowserRouter>
-      </UserContext.Provider>
-    </QueryClientProvider>
+        <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/profile" element={<ProfilePage/>}/>
+      </Routes>
+      <Footer></Footer>
+    </UserContext.Provider>
   );
 }
 

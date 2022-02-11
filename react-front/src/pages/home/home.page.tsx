@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { Game } from '../../models/game.model';
 import GamesGrid from '../../components/games-grid/games-grid.component';
 import http from '../../common/http-common';
+import Container from '../../components/container/container.component';
 
 const HomePage: React.FC = () => {
   
@@ -14,9 +15,7 @@ const HomePage: React.FC = () => {
   });
 
   return(
-    <main className='container'>
-      <GamesGrid games={games} />
-    </main>
+    <Container content={<GamesGrid games={games} />} />
   );
 }
 

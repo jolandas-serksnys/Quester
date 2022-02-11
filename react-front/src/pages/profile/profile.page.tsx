@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../models/user.model";
-import { getCurrentUser } from "../../services/auth.service"
+import Container from "../../components/container/container.component";
+import { UserContext } from "../../contexts/user.context";
 
 const ProfilePage: React.FC = () => {
-    const user: User = getCurrentUser();
+    const { isAuthenticated, user } = useContext(UserContext);
     const navigate = useNavigate();
     
     useEffect(() => {
-        if(!user.access_token) {
+        if(!isAuthenticated) {
             navigate('/');
         }
     })
 
     return(
-        <main className="container">
-            <h2>{user.email}</h2>
-        </main>
+        <Container content={
+            <ul>
+                <li>{user.email}</li>
+                <li>{user.name}</li>
+                <li>{user.user_group}</li>
+                <li>{new Date(user.created_at).toDateString()}</li>
+            </ul>
+        }/>
     )
 }
 
